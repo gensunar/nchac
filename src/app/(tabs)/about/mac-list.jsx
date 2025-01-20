@@ -10,7 +10,6 @@ const MacList = () => {
         <>
             <Stack.Screen options={{ headerShown: 'true', title: "About: Mac List" }} />
             <View>
-                <Section />
                 <MacListPage />
             </View>
         </>

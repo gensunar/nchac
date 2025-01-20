@@ -10,7 +10,6 @@ const ElectedMembers = () => {
         <>
         <Stack.Screen options={{headerShown: true, title: "About: Elected Members"}} />
             <View>
-                <Section />
                 <ElectedMembersPage />
             </View>
         </>

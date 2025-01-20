@@ -10,7 +10,6 @@ const Secretaries = () => {
         <>
             <Stack.Screen options={{ headerShown: true, title: "About: Secretaries" }} />
             <View>
-                <Section />
                 <SecretariesPage />
             </View>
         </>

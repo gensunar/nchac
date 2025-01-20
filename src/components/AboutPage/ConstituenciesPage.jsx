@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedItemSlice } from '../../store/slices/selectedItemSlice'
 import Section from './Section'
-import { macList } from "../../../constants/maclist"
+import { allMembers } from "../../../constants/maclist"
 
 const ConstituenciesPage = () => {
     // const windowHeight = Dimensions.get('window').height;
@@ -15,28 +15,30 @@ const ConstituenciesPage = () => {
     }, [dispatch])
     // render
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.text_container}>
                 <Text style={styles.header}>Constituencies</Text>
             </View>
             <View><Section /></View>
             <View style={styles.child_container}>
-                <Text>MAC Constituency List & Elected Members</Text>
+                <Text style={styles.mac_header}>MAC Constituency List & Elected Members</Text>
+                <View style={styles.header_row}>
+                    <Text style={styles.header_row_text}>Constituency</Text>
+                    <Text style={styles.header_row_text}>Members</Text>
+                </View>
                 <View style={styles.mac_frame}>
-                    {macList.map((item, index) => {
-                        console.log(item)
+                    {allMembers.map((item, index) => {
                         return (
                             <View style={styles.mac_card} key={index}>
-                                <Image source={{ uri: item.iconLink }} style={{ height: 200, width: 200 }} />
+                                <Text style={styles.mac_name_text}>{item.constituency}</Text>
                                 <Text style={styles.mac_name_text}>{item.elected_member}</Text>
-                                <Text>{item.constituency}</Text>
                             </View>
                         )
                     })}
 
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -57,6 +59,23 @@ const styles = StyleSheet.create({
         fontSize: 32,
         color: "#fff"
     },
+    header_row: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        backgroundColor: "#FFD358",
+        borderRadius: 10,
+    },
+    header_row_text: {
+        fontFamily: "bold",
+        fontSize: 20,
+        padding: 20,
+    },
+    mac_header: {
+        fontSize: 26,
+        textAlign: "center",
+        fontFamily: "black",
+    },
     child_container: {
         paddingRight: 15,
         paddingLeft: 15,
@@ -69,8 +88,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     mac_card: {
-        width: '48%',
+        width: '100%',
         marginBottom: 16,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
         backgroundColor: '#E9ecef',
         borderRadius: 8,
         paddingLeft: 8,

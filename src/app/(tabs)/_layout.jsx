@@ -15,7 +15,10 @@ const RootLayout = () => {
         'black': require('../../../assets/fonts/Poppins-Black.ttf'),
         'black-italic': require('../../../assets/fonts/Poppins-BlackItalic.ttf'),
         'regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
-        'semi-bold': require('../../../assets/fonts/Poppins-SemiBold.ttf')
+        'semi-bold': require('../../../assets/fonts/Poppins-SemiBold.ttf'),
+        'medium': require('../../../assets/fonts/Poppins-Medium.ttf'),
+        'extra-light': require('../../../assets/fonts/Poppins-ExtraLight.ttf'),
+        'light': require('../../../assets/fonts/Poppins-Light.ttf')
     })
 
 
