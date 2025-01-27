@@ -78,12 +78,13 @@ const styles = StyleSheet.create({
     header_text: {
         fontSize: 20,
         fontWeight: "500",
-        fontFamily: "black",
+        fontFamily: "semi-bold",
         marginBottom: 10,
     },
     definition: {
         textAlign: "justify",
-        fontFamily: "regular"
+        fontFamily: "regular",
+        fontSize: 16,
     },
     department: {
         paddingRight: 15,

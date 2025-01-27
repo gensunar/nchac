@@ -1,6 +1,5 @@
 import { Link, Stack } from 'expo-router'
 import { View, Text } from 'react-native'
-import Section from '../../../components/AboutPage/Section'
 import AboutPage from "../../../components/AboutPage/AboutPage"
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'

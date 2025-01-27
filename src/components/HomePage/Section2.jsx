@@ -9,7 +9,7 @@ const Section2 = () => {
             <View style={styles.first_card}>
                 <Image source={require("../../../assets/images/i.jpg")} style={styles.image} />
                 <Text style={styles.header}>Shri Exch Ftradg</Text>
-                <Text style={styles.sub_header}>Hon'ble Chjie Member of Council</Text>
+                <Text style={styles.sub_header}>Hon'ble Chief Executive Member</Text>
             </View>
             <View style={styles.second_card}>
                 <Text style={styles.message_header1}>Message From The Member</Text>
@@ -44,29 +44,29 @@ const styles = StyleSheet.create({
         objectFit: 'contain'
     },
     header: {
-        fontWeight: "500",
         fontSize: 24,
-        fontFamily: ""
+        fontFamily: "medium"
     }, 
     sub_header: {
-        fontWeight: "medium",
-        fontSize: 20,
+        fontFamily: "regular",
+        fontSize: 16,
     },
     second_card: {
         padding: 30,
-
+        marginTop: 15,
     },
     message_header1: {
-        fontWeight: "600",
-        fontSize: 22,
+        fontFamily: "medium",
+        fontSize: 20,
     },
     message_header: {
-        fontWeight: "medium",
+        fontFamily: "regular",
         marginTop: 9,
         fontSize: 16,
     },
     message: {
         textAlign: "justify",
+        fontFamily: "regular",
         fontSize: 16,
         marginTop: 5,
     },

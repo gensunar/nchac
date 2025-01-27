@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, ScrollView, Image } from 'react-native'
+import {electedMembers} from "../../../constants/maclist"
 
 
 const Section3 = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch('https://api.slingacademy.com/v1/sample-data/users')
-                const resValue = await res.json()
-                setData(resValue.users)
-                setLoading(false)
-            }
-            catch (err) {
-                console.log(err)
-                setLoading(false)
-            }
-        }
-        fetchData()
-    }, [])
 
     return (
         <View style={styles.container}>
@@ -28,12 +14,12 @@ const Section3 = () => {
                 <Text style={styles.header}>Executive Members</Text>
             </View>
             <View style={styles.items_container}>
-                <FlatList showsHorizontalScrollIndicator={false} data={data} horizontal renderItem={({ item }) => {
+                <FlatList showsHorizontalScrollIndicator={false} data={electedMembers} horizontal renderItem={({ item }) => {
                     return <View style={styles.render_container}>
-                        <Image source={{ uri: item.profile_picture }} style={styles.image} resizeMode="contain" />
+                        <Image source={{ uri: item.iconLink }} style={styles.image} resizeMode="contain" />
                         <View style={styles.text1_container}>
-                            <Text style={styles.first_row}>{item.first_name} {item.last_name}</Text>
-                            <Text style={styles.second_row}>{item.id}- {item.city}</Text>
+                            <Text style={styles.first_row}>{item.elected_member}</Text>
+                            <Text style={styles.second_row}>{item.constituency}</Text>
                         </View>
                     </View>
                 }} />
@@ -58,7 +44,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textDecorationLine: "underline",
         textDecorationColor: "green",
-        fontWeight: "bold",
+        fontFamily: "semi-bold",
         fontSize: 32,
         color: "#fff"
     },
@@ -84,11 +70,11 @@ const styles = StyleSheet.create({
         gap: 3,
     },
     first_row: {
-        fontWeight: "bold",
-        fontSize: 20,
+        fontFamily: "medium",
+        fontSize: 18,
     },
     second_row: {
-        fontWeight: "normal",
+        fontFamily: "light",
         fontSize: 16,
     }
 })
