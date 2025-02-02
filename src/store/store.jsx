@@ -1,12 +1,29 @@
 import { configureStore } from "@reduxjs/toolkit";
 import selectedItemReducer from "./slices/selectedItemSlice"
-import userReducer from "./slices/user" 
+import { persistStore, persistReducer } from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//user Reducer
+import userReducer from "./slices/user"
+
+
+const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+}
+
+const persistedReducer = persistReducer(persistConfig, userReducer)
 
 export const store = configureStore({
     reducer: {
         // Add reducers here
         selectedItem: selectedItemReducer,
-        user: userReducer
-
-    }
+        user: persistedReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false, // Disable serializable check for Redux Persist
+        }),
 })
+
+export const persistor = persistStore(store);

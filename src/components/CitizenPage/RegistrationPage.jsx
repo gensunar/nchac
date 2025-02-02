@@ -8,6 +8,8 @@ import { auth, db } from '../../../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import Dashboard from '../../app/(tabs)/citizen/dashboard'
+import { register } from '../../store/slices/user'
+import axios from 'axios'
 
 const RegistrationPage = () => {
 
@@ -44,16 +46,25 @@ const RegistrationPage = () => {
             await updateProfile(auth.currentUser, {
                 displayName: name,
             });
-            Alert.alert("Success", "Register Successfully")
-          if(userCredential){
-            router.push("/citizen/dashboard")
-        }
-          const data = await setDoc(doc(db, "users", userCredential?.user.uid),{
-            displayName: name,
-            email: email,
-            phoneNumber: mobile,
-            userId: userCredential?.user.uid 
-          })
+            if (userCredential) {
+                const uid = userCredential.user.uid
+                console.log(uid)
+                const token = await userCredential?.user.getIdToken()
+                const response = await axios.post(`https://b94d-2401-4900-b241-cb47-9196-5c22-c62c-392b.ngrok-free.app/api/user/add-user`,
+                    {body:{ name, mobile, email, password, uid }},
+                    { headers: { Authorization: `Bearer ${token}` } }
+                )
+                console.log(response)
+                Alert.alert("Success", "Register Successfully")
+
+                router.push("/citizen/login")
+            }
+            //   const data = await setDoc(doc(db, "users", userCredential?.user.uid),{
+            //     displayName: name,
+            //     email: email,
+            //     phoneNumber: mobile,
+            //     userId: userCredential?.user.uid 
+            //   })
 
         }
         catch (e) {
@@ -66,14 +77,14 @@ const RegistrationPage = () => {
             }
             else if (e.code.includes("auth/email-already-in-use")) {
                 Alert.alert("Error", "Email already in use");
-            } else{
+            } else {
                 Alert.alert("Registration failed")
             }
         }
     }
 
-    if(user.isLoggedIn){
-        return(
+    if (user.isLoggedIn) {
+        return (
             <Dashboard />
         )
     }

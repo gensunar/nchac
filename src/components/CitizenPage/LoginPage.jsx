@@ -5,26 +5,48 @@ import { auth } from "../../../firebase"
 import MyButton from '../../navigation/MyButton'
 import { Link, useRouter } from 'expo-router'
 import TextBox from '../../../constants/textBox'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../store/slices/user';
+import axios from 'axios';
+import Dashboard from '../../app/(tabs)/citizen/dashboard';
 
 const LoginPage = () => {
     const router = useRouter()
+    const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const loginHandler = async() => {
-        if(! email || ! password){
+    const loginHandler = async () => {
+        if (!email || !password) {
             Alert.alert("Error", "All fields are required")
         }
-        try{
-            await signInWithEmailAndPassword(auth, email, password);
-            router.push("/citizen/dashboard")
-        }catch(e){
+        try {
+            const logCred = await signInWithEmailAndPassword(auth, email, password);
+            const token = await logCred?.user.getIdToken()
+
+            const response = await axios.get('https://b94d-2401-4900-b241-cb47-9196-5c22-c62c-392b.ngrok-free.app/api/user/get-user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            dispatch(login({
+                user: response.data
+            }))
+            router.push("/citizen/dashboard",)
+        } catch (e) {
             console.log(e)
+            if (e.code.includes("auth/invalid-credential")) {
+                Alert.alert("Invalid Credential")
+            }
+
         }
     }
- 
+    if (user.isLoggedIn) {
+        return (
+            <Dashboard />
+        )
+    }
 
     // render
     return (
@@ -36,7 +58,7 @@ const LoginPage = () => {
                 <Text style={styles.sub_header}>North Cachar Autonomous Council</Text>
             </View>
             <View style={styles.main_card}>
-            <Text>{user? user.displayName : "No User"}</Text>
+                <Text>{user ? user.displayName : "No User"}</Text>
                 <View style={styles.card}>
                     <Text style={styles.login}>Login</Text>
                     <View style={styles.line}></View>
@@ -57,7 +79,7 @@ const LoginPage = () => {
                             secureTextEntry
                         />
                     </View>
-                    <MyButton backgroundColor={"#33ac3f"} buttonTitle={'Login'}  onClick={loginHandler}/>
+                    <MyButton backgroundColor={"#33ac3f"} buttonTitle={'Login'} onClick={loginHandler} />
                 </View>
             </View>
             <View style={styles.bottom_container}>

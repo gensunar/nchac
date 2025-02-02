@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         shadowOpacity: 0.8,
         shadowRadius: 2,
-        width: 100,
+        width: 150,
         justifyContent: "center",
         alignItems: "center"
     },
