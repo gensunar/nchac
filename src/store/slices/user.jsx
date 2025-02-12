@@ -11,16 +11,11 @@ const userSlice = createSlice({
         login: (state, action) => {
             state.user = action.payload.user
             state.isLoggedIn = true,
-            // state.email = action.payload.email,
-            // state.displayName = action.payload.name,
-            // state.uid= action.payload.uid
+            state.uid= action.payload.uid
             state.isLoading= false
         }, 
         logout : (state, action) => {
             state.isLoggedIn = false;
-            state.email = null;
-            state.displayName = null;
-            state.uid = null;
             state.user = null;
             state.isLoading = true;
         }

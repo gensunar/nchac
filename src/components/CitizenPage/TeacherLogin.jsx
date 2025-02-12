@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
-import TextBox from '../../../constants/textBox'
+import PrimaryInput from '../../../constants/primaryInput'
 import { Picker } from '@react-native-picker/picker'
+import MyButton from '../../navigation/MyButton'
 
 const TeacherLogin = () => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [selectedValue, setSelectedValue] = useState('')
 
+
+
+    const handleSubmit = () => {
+
+    }
+
     // render
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.child_container}>
                 <View style={styles.header_container}>
                     <Text style={styles.header}>Employee Information System</Text>
@@ -19,7 +26,7 @@ const TeacherLogin = () => {
                 <View style={styles.card}>
                     <View>
                         <Text style={styles.text}>Username</Text>
-                        <TextBox
+                        <PrimaryInput
                             placeholder="username"
                             value={userName}
                             onChange={setUserName}
@@ -27,7 +34,7 @@ const TeacherLogin = () => {
                     </View>
                     <View>
                         <Text style={styles.text}>Password</Text>
-                        <TextBox
+                        <PrimaryInput
                             placeholder="password"
                             value={password}
                             onChange={setPassword}
@@ -35,7 +42,7 @@ const TeacherLogin = () => {
                     </View>
                     <View>
                         <Text style={styles.text}>Password</Text>
-                        <TextBox
+                        <PrimaryInput
                             placeholder="password"
                             value={password}
                             onChange={setPassword}
@@ -47,6 +54,7 @@ const TeacherLogin = () => {
                             <Picker
                                 selectedValue={selectedValue}
                                 onValueChange={(itemValue) => setSelectedValue(itemValue)}
+                                mode='dropdown'
                                 style={styles.picker}
                             >
                                 <Picker.Item label="Teacher" value="teacher" style={styles.picker_item} />
@@ -55,6 +63,7 @@ const TeacherLogin = () => {
                         </View>
                     </View>
                 </View>
+                <MyButton onClick={handleSubmit} buttonTitle={"Submit"} backgroundColor= "#FFBF00" width= "100%" />
             </View>
         </ScrollView>
     )
@@ -85,15 +94,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 20,
         borderRadius: 10,
+        marginBottom: 20,
     },
     pickerContainer: {
         borderWidth: 1,
         borderColor: 'gray',
+        height: 50,
+        justifyContent: "center",
+        marginVertical: 7,
+        borderRadius: 12,
     },
     picker: {
-        height: 45,
-        padding: 0,
-        margin: 0
+       
     },
     text: {
         fontFamily: "semi-bold",

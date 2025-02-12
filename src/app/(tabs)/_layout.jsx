@@ -35,7 +35,6 @@ const RootLayout = () => {
                     tabBarItemStyle: { position: 'relative' }, headerShown: false
                 }}>
                     <Tabs.Screen name="home" options={{
-                        tabBarLabel: "Home", title: "Home",
                         tabBarIcon: ({ color }) => <FontAwesome size={24} name="home" color={color} />,
                     }} />
                     <Tabs.Screen name="about" options={{
@@ -51,7 +50,7 @@ const RootLayout = () => {
                         tabBarIcon: ({ color }) => <FontAwesome name="phone" size={24} color={color} />
                     }} />
                     <Tabs.Screen name="citizen" options={{
-                        tabBarLabel: "Citizen", title: "Citizen",
+                        tabBarLabel: "Citizen", title: "Citizen", headerShown: false,
                         tabBarIcon: ({ color }) => <FontAwesome6 name="people-line" size={24} color={color} />
                     }} />
                 </Tabs>

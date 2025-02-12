@@ -1,7 +1,6 @@
 import { Stack } from 'expo-router'
 import React from 'react'
 import { View, Text } from 'react-native'
-import TextBox from '../../../../constants/textBox'
 
 const index = () => {
     // render

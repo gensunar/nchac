@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
-import TextBox from '../../../constants/textBox'
+import TextBox from '../../../constants/primaryInput'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import MyButton from '../../navigation/MyButton'
 import { Link, useRouter } from 'expo-router'
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Dashboard from '../../app/(tabs)/citizen/dashboard'
 import { register } from '../../store/slices/user'
 import axios from 'axios'
+import { base_url } from '../../../constants/url'
 
 const RegistrationPage = () => {
 
@@ -50,7 +51,7 @@ const RegistrationPage = () => {
                 const uid = userCredential.user.uid
                 console.log(uid)
                 const token = await userCredential?.user.getIdToken()
-                const response = await axios.post(`https://b94d-2401-4900-b241-cb47-9196-5c22-c62c-392b.ngrok-free.app/api/user/add-user`,
+                const response = await axios.post(`${base_url}/api/user/add-user`,
                     {body:{ name, mobile, email, password, uid }},
                     { headers: { Authorization: `Bearer ${token}` } }
                 )
@@ -59,13 +60,6 @@ const RegistrationPage = () => {
 
                 router.push("/citizen/login")
             }
-            //   const data = await setDoc(doc(db, "users", userCredential?.user.uid),{
-            //     displayName: name,
-            //     email: email,
-            //     phoneNumber: mobile,
-            //     userId: userCredential?.user.uid 
-            //   })
-
         }
         catch (e) {
             console.log(e)

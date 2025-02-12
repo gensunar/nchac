@@ -4,11 +4,12 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../firebase"
 import MyButton from '../../navigation/MyButton'
 import { Link, useRouter } from 'expo-router'
-import TextBox from '../../../constants/textBox'
+import PrimaryInput from '../../../constants/primaryInput';
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/slices/user';
 import axios from 'axios';
 import Dashboard from '../../app/(tabs)/citizen/dashboard';
+import {base_url} from "../../../constants/url"
 
 const LoginPage = () => {
     const router = useRouter()
@@ -25,7 +26,7 @@ const LoginPage = () => {
             const logCred = await signInWithEmailAndPassword(auth, email, password);
             const token = await logCred?.user.getIdToken()
 
-            const response = await axios.get('https://b94d-2401-4900-b241-cb47-9196-5c22-c62c-392b.ngrok-free.app/api/user/get-user', {
+            const response = await axios.get(`${base_url}/api/user/get-user`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -64,7 +65,7 @@ const LoginPage = () => {
                     <View style={styles.line}></View>
                     <View>
                         <Text style={styles.text}>Email</Text>
-                        <TextBox
+                        <PrimaryInput
                             placeholder="enter your email"
                             value={email}
                             onChangeText={setEmail}
@@ -72,7 +73,7 @@ const LoginPage = () => {
                     </View>
                     <View>
                         <Text style={styles.text}>Password</Text>
-                        <TextBox
+                        <PrimaryInput
                             placeholder="password"
                             value={password}
                             onChangeText={setPassword}

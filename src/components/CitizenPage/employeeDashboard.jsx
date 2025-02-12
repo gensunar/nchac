@@ -3,21 +3,26 @@ import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native'
 import MyButton from '../../navigation/MyButton'
 import { auth, db } from '../../../firebase'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { register, logout } from '../../store/slices/user'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import axios from 'axios'
+import { base_url } from '../../../constants/url'
+
+
 const employeeDashboard = () => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
     const [userData, setUserData] = useState({})
     const [userSnapData, setUserSnapData] = useState({})
-    const [loading, setLoading] = useState(user?.isLoading)
+    const [fetchUser, setFetchUser] = useState({})
+    const [loading, setLoading] = useState(true)
+    const [showUpdateForm, setShowUpdateForm] = useState(false)
+    const [refreshProfile, setRefreshProfile] = useState(false);
 
-    // console.log("UserData", userData)
 
     const router = useRouter()
-
 
     const handleLogout = async () => {
         try {
@@ -31,8 +36,26 @@ const employeeDashboard = () => {
         }
     }
 
+
+    const fetchProfileData = async () => {
+        try {
+            const token = await auth.currentUser.getIdToken()
+            const response = await axios.get(`${base_url}/api/user/get-user`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setLoading(false)
+            setFetchUser(response.data)
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
+
     const handleAttendance = async () => {
-        
+        router.push("/citizen/attendance")
     }
 
     useEffect(() => {
@@ -50,13 +73,21 @@ const employeeDashboard = () => {
         return unsubscribe
     }, [dispatch, userData])
 
-    if (user?.isLoggedIn && user?.loading) {
+
+    useEffect(() => {
+        fetchProfileData()
+    }, [])
+
+
+
+    if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
+
 
 
     if (user?.isLoggedIn && !user.isLoading) {
@@ -66,27 +97,29 @@ const employeeDashboard = () => {
                     <View style={styles.main}>
                         <View style={styles.top}>
                             <View style={styles.image_container}>
-                                <Image source={require('../../../assets/images/Panimur.jpg')} style={styles.image} />
+                                <Image source={{ uri: fetchUser.image }} style={styles.image} />
                             </View>
                             <View style={styles.details}>
                                 <Text style={styles.name}>{userData.user?.name}</Text>
-                                <Text style={styles.position}>Asst. teacher</Text>
+                                <Text style={styles.position}>{fetchUser.designation ? fetchUser.designation : "NA"}</Text>
                             </View>
                         </View>
                         <View style={styles.button}>
-                            <MyButton onClick={handleAttendance} buttonTitle={"CHECK-IN"} backgroundColor="#ABE098" />
-                            <MyButton onClick={handleLogout} buttonTitle={"CHECK-OUT"} backgroundColor="#FF4646" />
+                            <>
+                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor="#ABE098" />
+                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor="#FF4646" />
+                            </>
                         </View>
                     </View>
                     <View style={styles.card_section}>
                         <View style={styles.card}>
                             <View style={styles.data_section}>
-                                <AntDesign name="profile" size={70} color="black" style={styles.icon} />
-                                <Text style={styles.text}>Profile</Text>
+                                <AntDesign name="profile" size={50} color="#FFBF00" style={styles.icon} />
+                                <Link style={styles.text} href="/citizen/profile"><Text style={styles.text}>Profile</Text></Link>
                             </View>
                             <View style={styles.data_section}>
-                                <AntDesign name="calendar" size={70} color="black" style={styles.icon} />
-                                <Text style={styles.text}>Attendance</Text>
+                                <AntDesign name="calendar" size={50} color="#FFBF00" style={styles.icon} />
+                                <Link style={styles.text} href="/citizen/attendance"><Text >Attendance</Text></Link>
                             </View>
                         </View>
                     </View>
@@ -112,33 +145,38 @@ const styles = StyleSheet.create({
     },
     top: {
         display: "flex",
-        flexDirection: 'row',
         alignItems: "center",
 
     },
     image_container: {
-        height: 100,
-        width: 100,
+        height: 120,
+        width: 120,
     },
     image: {
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
+        borderTopLeftRadius: 120,
+        borderTopRightRadius: 120,
+        borderBottomLeftRadius: 120,
+        borderBottomRightRadius: 120,
         width: "100%",
         height: "100%",
+        objectFit: "contain",
+        borderWidth: 1,
+        borderColor: "rgba(89, 90, 91, 0.27)",
     },
     details: {
-        marginLeft: 25,
+       marginTop: 18,
     },
     name: {
         fontSize: 26,
         fontFamily: "medium",
         marginBottom: -8,
+        letterSpacing: 1,
     },
     position: {
         fontFamily: "extra-light",
         fontSize: 14,
+        textAlign: "center",
+        letterSpacing: 1,
     },
     button: {
         display: "flex",
@@ -162,7 +200,7 @@ const styles = StyleSheet.create({
     data_section: {
         width: '48%',
         marginBottom: 16,
-        backgroundColor: '#E9ecef',
+        backgroundColor: 'rgba(216, 215, 215, 0.26)',
         borderRadius: 8,
         paddingLeft: 8,
         paddingRight: 8,
@@ -171,13 +209,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon: {
-        marginTop: 30,
-        color: "red"
+        marginTop: 20,
     },
     text: {
-        marginTop: 30,
-        fontFamily: "semi-bold",
-        fontSize: 22,
+        marginTop: 20,
+        fontFamily: "medium",
+        fontSize: 18,
+        letterSpacing: 1,
     }
 })
 
