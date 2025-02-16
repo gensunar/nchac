@@ -7,7 +7,7 @@ const Section2 = () => {
     return (
         <View style={styles.container}>
             <View style={styles.first_card}>
-                <Image source={require("../../../assets/images/i.jpg")} style={styles.image} />
+                <Image source={{uri : `https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg`}} style={styles.image} />
                 <Text style={styles.header}>Shri Exch Ftradg</Text>
                 <Text style={styles.sub_header}>Hon'ble Chief Executive Member</Text>
             </View>
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     },
     image: {
         height: 400,
-        width: 400,
-        objectFit: 'contain'
+        width: "100%",
+        objectFit: 'cover'
     },
     header: {
         fontSize: 24,

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Alert, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, Text, Alert, ActivityIndicator, StyleSheet, ScrollView } from 'react-native'
 import { auth } from '../../../firebase'
 import { useSelector } from 'react-redux'
 import MyButton from '../../navigation/MyButton'
 import axios from 'axios'
 import { base_url } from '../../../constants/url'
+import config from '../../../config'
 
 const AttendancePage = () => {
     const user = useSelector((state) => state.user)
@@ -14,12 +15,12 @@ const AttendancePage = () => {
     const [loading, setLoading] = useState(false)
     const [presentDays, setPresentDays] = useState()
     const [absentDays, setAbsentDays] = useState()
-
+    const [attendanceLength, setAttendanceLength] = useState()
 
     const markAttendance = async () => {
         try {
             const token = await auth.currentUser?.getIdToken()
-            const res = await axios.post(`${base_url}/api/user/mark-attendance`, {}, {
+            const res = await axios.post(`${config.baseUrl}/api/user/mark-attendance`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             Alert.alert("Success", res.data.message)
@@ -36,7 +37,7 @@ const AttendancePage = () => {
             setLoading(true)
             const token = await auth.currentUser?.getIdToken()
             console.log(token)
-            const res = await axios.get(`${base_url}/api/user/get-attendance`, {
+            const res = await axios.get(`${config.baseUrl}/api/user/get-attendance`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -45,6 +46,7 @@ const AttendancePage = () => {
             setRecords(res.data.attendanceRecords)
             setPresentDays(res.data.presentCount)
             setAbsentDays(res.data.absentCount)
+            setAttendanceLength(res.data.attendanceLength)
             setLoading(false)
         }
         catch (e) {
@@ -80,12 +82,11 @@ const AttendancePage = () => {
 
     // render
     return (
-        <View style={styles.main_container}>
+        <ScrollView style={styles.main_container}>
             <View style={styles.user_info}>
                 <Text style={styles.user_name_bold}>{day} <Text style={styles.user_name}> {userData.name}</Text></Text>
                 <View style={styles.button}>
-                    <MyButton buttonTitle="Mark" onClick={markAttendance} backgroundColor="#FFDB58" color="#fff" />
-                    <MyButton buttonTitle="Show" onClick={showAttendance} backgroundColor="#93C572" color="#fff" />
+                    <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor="#FFDB58" color="#fff" width="100%"/>
                 </View>
             </View>
             <View style={styles.container}>
@@ -113,19 +114,23 @@ const AttendancePage = () => {
                     )
                 })}
                 <View style={styles.bottom}>
-                    <View style={styles.status_header}>
-                        <Text style={[styles.status_data, { color: "#93C572" }]}>Present:</Text>
-                        <Text style={{ color: "#93c572" }}> {presentDays}</Text>
+                    <View style={styles.status_column}>
+                        <View style={styles.status_header}>
+                            <Text style={[styles.status_data, { color: "#93C572" }]}>Present:</Text>
+                            <Text style={{ color: "#93c572" }}> {presentDays}</Text>
+                        </View>
+                        <View style={styles.status_header}>
+                            <Text style={[styles.status_data, { color: "red" }]}>Absent:</Text>
+                            <Text style={{ color: "red", }}> {absentDays}</Text>
+                        </View>
                     </View>
                     <View style={styles.status_header}>
-                        <Text style={[styles.status_data, { color: "red" }]}>Absent:</Text>
-                        <Text style={{ color: "red", }}> {absentDays}</Text>
+                        <Text style={[styles.status_data, { color: "#93C572" }]}>Total:</Text>
+                        <Text style={{ color: "#93c572" }}> {attendanceLength}</Text>
                     </View>
                 </View>
             </View>
-
-
-        </View>
+        </ScrollView>
     )
 }
 
@@ -136,6 +141,7 @@ const styles = StyleSheet.create({
     main_container: {
         padding: 20,
         flex: 1,
+        paddingBottom: 50,
     },
     user_info: {
         backgroundColor: "#fff",
@@ -160,24 +166,23 @@ const styles = StyleSheet.create({
         fontFamily: "light"
     },
     button: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
         marginTop: 15,
     },
     container: {
         padding: 16,
         paddingTop: 30,
-        backgroundColor: '#fff',
+        paddingBottom:60,
+        // backgroundColor: '#fff',
     },
     header_row: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderBottomWidth: 1,
-        borderBottomColor: '#000',
-        paddingBottom: 8,
-        marginBottom: 8,
         fontFamily: "medium",
+        backgroundColor: '#fff',
+        paddingVertical: 20,
+        textAlignVertical: "center",
+        borderRadius: 10,
+        marginBottom: 10,
     },
     data: {
         backgroundColor: "#fff",

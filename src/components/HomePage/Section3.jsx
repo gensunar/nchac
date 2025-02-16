@@ -16,7 +16,7 @@ const Section3 = () => {
             <View style={styles.items_container}>
                 <FlatList showsHorizontalScrollIndicator={false} data={electedMembers} horizontal renderItem={({ item }) => {
                     return <View style={styles.render_container}>
-                        <Image source={{ uri: item.iconLink }} style={styles.image} resizeMode="contain" />
+                        <Image source={{ uri: item.iconLink }} style={styles.image} resizeMode="fill" />
                         <View style={styles.text1_container}>
                             <Text style={styles.first_row}>{item.elected_member}</Text>
                             <Text style={styles.second_row}>{item.constituency}</Text>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     image: {
         height: 250,
-        width: 200,
+        width: "100%",
         borderRadius: 10,
     },
     text1_container: {

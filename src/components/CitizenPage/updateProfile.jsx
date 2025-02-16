@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import MyButton from "../../navigation/MyButton"
 import ProfileUpdateModal from '../../navigation/Models/profileUpdateModal'
+import config from '../../../config'
 
 
 const UpdateProfile = () => {
@@ -20,7 +21,7 @@ const UpdateProfile = () => {
     const fetchProfileData = async () => {
         try {
             const token = await auth.currentUser.getIdToken()
-            const response = await axios.get(`${base_url}/api/user/get-user`, {
+            const response = await axios.get(`${config.baseUrl}/api/user/get-user`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

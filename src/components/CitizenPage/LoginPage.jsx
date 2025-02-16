@@ -10,6 +10,7 @@ import { login } from '../../store/slices/user';
 import axios from 'axios';
 import Dashboard from '../../app/(tabs)/citizen/dashboard';
 import {base_url} from "../../../constants/url"
+import config from '../../../config';
 
 const LoginPage = () => {
     const router = useRouter()
@@ -26,7 +27,7 @@ const LoginPage = () => {
             const logCred = await signInWithEmailAndPassword(auth, email, password);
             const token = await logCred?.user.getIdToken()
 
-            const response = await axios.get(`${base_url}/api/user/get-user`, {
+            const response = await axios.get(`${config.baseUrl}/api/user/get-user`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

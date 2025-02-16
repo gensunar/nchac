@@ -8,7 +8,6 @@ const index = () => {
         <>
             <Stack.Screen options={{ headerShown: true, title: "Citizen" }} />
             <View>
-                <Text>This is Citizen Page</Text>
                 <Link href="/citizen/registration">Go to Registration</Link>
                 <Link href="/citizen/teacher">Go to Teacher Login System</Link>
                 <Link  href="/citizen/dashboard"><Text >Dashboard</Text></Link>

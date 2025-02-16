@@ -9,6 +9,7 @@ import { register, logout } from '../../store/slices/user'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios'
 import { base_url } from '../../../constants/url'
+import config from '../../../config'
 
 
 const employeeDashboard = () => {
@@ -40,7 +41,7 @@ const employeeDashboard = () => {
     const fetchProfileData = async () => {
         try {
             const token = await auth.currentUser.getIdToken()
-            const response = await axios.get(`${base_url}/api/user/get-user`, {
+            const response = await axios.get(`${config.baseUrl}/api/user/get-user`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -80,7 +81,7 @@ const employeeDashboard = () => {
 
 
 
-    if (loading) {
+    if (user?.isLoggedIn && loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator size="large" color="#0000ff" />

@@ -11,6 +11,7 @@ import Dashboard from '../../app/(tabs)/citizen/dashboard'
 import { register } from '../../store/slices/user'
 import axios from 'axios'
 import { base_url } from '../../../constants/url'
+import config from '../../../config'
 
 const RegistrationPage = () => {
 
@@ -51,7 +52,7 @@ const RegistrationPage = () => {
                 const uid = userCredential.user.uid
                 console.log(uid)
                 const token = await userCredential?.user.getIdToken()
-                const response = await axios.post(`${base_url}/api/user/add-user`,
+                const response = await axios.post(`${config.baseUrl}/api/user/add-user`,
                     {body:{ name, mobile, email, password, uid }},
                     { headers: { Authorization: `Bearer ${token}` } }
                 )
