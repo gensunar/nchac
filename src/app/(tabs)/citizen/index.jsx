@@ -10,7 +10,7 @@ const index = () => {
             <View>
                 <Link href="/citizen/registration">Go to Registration</Link>
                 <Link href="/citizen/teacher">Go to Teacher Login System</Link>
-                <Link  href="/citizen/dashboard"><Text >Dashboard</Text></Link>
+                <Link  href="/citizen/Dashboard"><Text >Dashboard</Text></Link>
 
             </View>
         </>

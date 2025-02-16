@@ -8,7 +8,7 @@ import PrimaryInput from '../../../constants/primaryInput';
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/slices/user';
 import axios from 'axios';
-import Dashboard from '../../app/(tabs)/citizen/dashboard';
+import Dashboard from "../../app/(tabs)/citizen/Dashboard"
 import {base_url} from "../../../constants/url"
 import config from '../../../config';
 
