@@ -28,29 +28,30 @@ const RootLayout = () => {
         <Provider store={store}>
             <PersistGate loading={<Text>Loading</Text>} persistor={persistor}>
                 <Tabs screenOptions={{
-                    tabBarActiveTintColor: 'black',
-                    tabBarInactiveTintColor: 'gray',
-                    tabBarStyle: { backgroundColor: 'white' },
-                    tabBarLabelStyle: { fontSize: 10, fontWeight: 'normal' },
+                    tabBarActiveTintColor: '#ABE098',
+                    tabBarInactiveTintColor: '#FF4646',
+                    tabBarStyle: { backgroundColor: 'white', height: 60,},
+                    tabBarLabelStyle: { fontSize: 10, fontWeight: 'normal', letterSpacing: 1, fontFamily: "medium",},
                     tabBarItemStyle: { position: 'relative' }, headerShown: false
                 }}>
                     <Tabs.Screen name="home" options={{
+                        tabBarLabel: "home", title: "Home",
                         tabBarIcon: ({ color }) => <FontAwesome size={24} name="home" color={color} />,
                     }} />
                     <Tabs.Screen name="about" options={{
-                        tabBarLabel: "About", title: "About",
+                        tabBarLabel: "about", title: "About",
                         tabBarIcon: ({ color }) => <Ionicons name="information-circle" size={24} color={color} />
                     }} />
                     <Tabs.Screen name="departments" options={{
-                        tabBarLabel: "Department", title: "Department",
+                        tabBarLabel: "department", title: "Department",
                         tabBarIcon: ({ color }) => <FontAwesome6 name="building-columns" size={24} color={color} />
                     }} />
                     <Tabs.Screen name="contact" options={{
-                        tabBarLabel: "Contact", title: "Contact",
+                        tabBarLabel: "contact", title: "Contact",
                         tabBarIcon: ({ color }) => <FontAwesome name="phone" size={24} color={color} />
                     }} />
                     <Tabs.Screen name="citizen" options={{
-                        tabBarLabel: "Citizen", title: "Citizen", headerShown: false,
+                        tabBarLabel: "citizen", title: "Citizen", headerShown: false,
                         tabBarIcon: ({ color }) => <FontAwesome6 name="people-line" size={24} color={color} />
                     }} />
                 </Tabs>

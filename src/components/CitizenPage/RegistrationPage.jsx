@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native'
 import TextBox from '../../../constants/primaryInput'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import MyButton from '../../navigation/MyButton'
@@ -7,11 +7,14 @@ import { Link, useRouter } from 'expo-router'
 import { auth, db } from '../../../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
-import Dashboard from '../../app/(tabs)/citizen/dashboard'
+import Dashboard from '../../app/(tabs)/citizen/Dashboard'
 import { register } from '../../store/slices/user'
 import axios from 'axios'
 import { base_url } from '../../../constants/url'
 import config from '../../../config'
+import registrationImage from "../../../assets/images/registration.png"
+import Feather from '@expo/vector-icons/Feather';
+
 
 const RegistrationPage = () => {
 
@@ -25,7 +28,18 @@ const RegistrationPage = () => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const [secureText, setSecureText] = useState(true)
 
+
+    const secondInputRef = useRef(null);
+    const thirdInputRef = useRef(null);
+    const fourthInputRef = useRef(null);
+    const fifthInputRef = useRef(null);
+    const sixthInputRef = useRef(null);
+
+    const handleShowPassword = () => {
+        setSecureText(!secureText)
+    }
 
     const handleRegister = async () => {
 
@@ -53,7 +67,7 @@ const RegistrationPage = () => {
                 console.log(uid)
                 const token = await userCredential?.user.getIdToken()
                 const response = await axios.post(`${config.baseUrl}/api/user/add-user`,
-                    {body:{ name, mobile, email, password, uid }},
+                    { body: { name, mobile, email, password, uid } },
                     { headers: { Authorization: `Bearer ${token}` } }
                 )
                 console.log(response)
@@ -84,64 +98,88 @@ const RegistrationPage = () => {
         )
     }
 
+    const handleNextFocus = (nextInputRef) => {
+        if (nextInputRef && nextInputRef.current) {
+            nextInputRef.current.focus();
+        }
+    };
+
     // render
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.user_header}>User Registration</Text>
-            <View style={styles.green_line}></View>
             <View style={styles.header_container}>
                 <Text style={styles.header}>Employee Information System</Text>
                 <Text style={styles.sub_header}>North Cachar Autonomous Council</Text>
             </View>
             <View style={styles.main_card}>
+                <View style={styles.image_container}>
+                    <Image source={registrationImage} style={styles.image} />
+                </View>
                 <View style={styles.card}>
-                    <Text style={styles.signup}>Sign Up</Text>
-                    <View style={styles.line}></View>
                     <View>
                         <Text style={styles.text}>Name</Text>
                         <TextBox
                             placeholder="enter your name"
                             value={name}
                             onChangeText={setName}
+                            onSubmitEditing={() => handleNextFocus(secondInputRef)}
+                            returnKeyType="next"
                         />
                     </View>
                     <View>
                         <Text style={styles.text}>Email</Text>
                         <TextBox
+                            inputRef={secondInputRef}
                             placeholder="enter your email"
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"
+                            onSubmitEditing={() => handleNextFocus(thirdInputRef)}
+                            returnKeyType="next"
                         />
                     </View><View>
                         <Text style={styles.text}>Mobile Number</Text>
                         <TextBox
+                            inputRef={thirdInputRef}
                             placeholder="10 digit mobile number"
                             value={mobile}
                             onChangeText={setMobile}
                             keyBoardType="numeric"
                             maxLength={10}
+                            onSubmitEditing={() => handleNextFocus(fourthInputRef)}
+                            returnKeyType="next"
                         />
                     </View>
                     <View>
                         <Text style={styles.text}>Password</Text>
-                        <TextBox
-                            placeholder="password"
-                            value={password}
-                            onChangeText={setPassword}
-                        // secureTextEntry
-                        />
+                        <View style={styles.password}>
+                            <TextBox
+                                inputRef={fourthInputRef}
+                                placeholder="password"
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry={secureText}
+                                onSubmitEditing={() => handleNextFocus(fifthInputRef)}
+                                returnKeyType="next"
+                            />
+                            <Feather name={secureText ? "eye-off" : "eye"} size={24} color="black" style={styles.icon} onPress={handleShowPassword} />
+                        </View>
                     </View>
                     <View>
                         <Text style={styles.text}>Confirm password</Text>
-                        <TextBox
-                            placeholder="confirm password"
-                            value={confirmPassword}
-                            onChangeText={setConfirmPassword}
-                        // secureTextEntry
-                        />
+                        <View style={styles.password}>
+                            <TextBox
+                                inputRef={fifthInputRef}
+                                placeholder="confirm password"
+                                value={confirmPassword}
+                                onChangeText={setConfirmPassword}
+                                secureTextEntry
+                                onSubmitEditing={handleRegister}
+                                returnKeyType="done"
+                            />
+                        </View>
                     </View>
-                    <MyButton onClick={handleRegister} backgroundColor={"#33ac3f"} buttonTitle={'Sign Up'} />
+                    <MyButton onClick={handleRegister} backgroundColor={"#33ac3f"} buttonTitle={'Sign Up'} width="100%" color="#fff" borderRadius={60} marginTop={20} />
                 </View>
             </View>
             <View style={styles.bottom_container}>
@@ -171,13 +209,17 @@ const styles = StyleSheet.create({
     main_card: {
         padding: 20,
     },
-    green_line: {
-        height: 2,
-        backgroundColor: 'green',
-        width: '100%',
-        marginVertical: 10,
+    image_container: {
+        height: 300,
+        width: "100%",
+    },
+    image: {
+        objectFit: "contain",
+        width: "100%",
+        height: "100%",
     },
     header_container: {
+        marginTop: 40,
         marginBottom: 20,
         alignItems: "center",
     },
@@ -189,7 +231,6 @@ const styles = StyleSheet.create({
         fontFamily: "extra-light"
     },
     card: {
-        backgroundColor: "#ececec",
         borderRadius: 10,
         padding: 10,
     },
@@ -204,11 +245,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     bottom_text: {
-        fontFamily: "regular",
+        fontFamily: "extra-light",
+        letterSpacing: 1,
         fontSize: 16,
+        color: "rgb(130, 128, 128)"
     },
     bottom_text_data: {
-        fontFamily: "regular",
+        fontFamily: "medium",
+        letterSpacing: 1,
         fontSize: 16,
         color: "blue",
         textDecorationLine: "underline",
@@ -223,6 +267,13 @@ const styles = StyleSheet.create({
         fontFamily: "light",
         fontSize: 18,
         marginTop: 20
+    },
+    icon: {
+        position: 'absolute',
+        right: 12,
+        top: 25,
+        color: "rgb(114, 114, 114)",
+        fontFamily: "bold"
     },
 })
 export default RegistrationPage

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native'
+import React, { useEffect, useState, Suspense } from 'react'
+import { View, Text, ActivityIndicator, StyleSheet, Image, SafeAreaView } from 'react-native'
 import MyButton from '../../navigation/MyButton'
 import { auth, db } from '../../../firebase'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
@@ -8,8 +8,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { register, logout } from '../../store/slices/user'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios'
-import { base_url } from '../../../constants/url'
 import config from '../../../config'
+import useLocation from '../../hooks/useLocation'
+
+const Login = React.lazy(() => import('../../app/(tabs)/citizen/login'));
 
 
 const employeeDashboard = () => {
@@ -21,7 +23,7 @@ const employeeDashboard = () => {
     const [loading, setLoading] = useState(true)
     const [showUpdateForm, setShowUpdateForm] = useState(false)
     const [refreshProfile, setRefreshProfile] = useState(false);
-
+    const { latitude, longitude, errorMsg, locationText } = useLocation()
 
     const router = useRouter()
 
@@ -80,17 +82,20 @@ const employeeDashboard = () => {
     }, [])
 
 
-
     if (user?.isLoggedIn && loading) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.loading_container}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
 
+    if (!user.isLoggedIn) {
+        router.replace("citizen/login")
+        return null
+    }
 
-
+    console.log(locationText)
     if (user?.isLoggedIn && !user.isLoading) {
         return (
             <>
@@ -104,11 +109,23 @@ const employeeDashboard = () => {
                                 <Text style={styles.name}>{userData.user?.name}</Text>
                                 <Text style={styles.position}>{fetchUser.designation ? fetchUser.designation : "NA"}</Text>
                             </View>
+                            <View style={styles.location}>
+                                {Array.isArray(locationText) && locationText.length > 0 ? (
+                                    locationText.map((item, index) => (
+                                        <View key={index}>
+                                            <Text style={styles.header_text}>Your Current Location: </Text>
+                                            <Text style={styles.data_text}>{item.city}, {item.region}, {item.postalCode}</Text>
+                                            <Text style={styles.data_text}>{item.formattedAddress}</Text>
+                                        </View>
+                                    ))
+                                ) : (<Text>Loading....</Text>)}
+                                <Text style={styles.data_text}>{latitude}, {longitude}</Text>
+                            </View>
                         </View>
                         <View style={styles.button}>
                             <>
-                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor="#ABE098" />
-                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor="#FF4646" />
+                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor="#ABE098" borderRadius={30} />
+                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor="#FF4646" borderRadius={30} />
                             </>
                         </View>
                     </View>
@@ -128,11 +145,6 @@ const employeeDashboard = () => {
             </>
         )
     }
-    return (
-        <View style={styles.container}>
-            <Text>Please login to access</Text>
-        </View>
-    )
 }
 
 const styles = StyleSheet.create({
@@ -165,7 +177,7 @@ const styles = StyleSheet.create({
         borderColor: "rgba(89, 90, 91, 0.27)",
     },
     details: {
-       marginTop: 18,
+        marginTop: 18,
     },
     name: {
         fontSize: 26,
@@ -217,7 +229,24 @@ const styles = StyleSheet.create({
         fontFamily: "medium",
         fontSize: 18,
         letterSpacing: 1,
-    }
+    },
+    loading_container: {
+        display: "flex",
+    },
+    location: {
+        marginTop: 20
+    },
+    header_text: {
+        color: "rgba(22, 22, 22, 0.56)",
+        letterSpacing: 1,
+        fontFamily: "medium",
+        fontSize: 18,
+    },
+    data_text: {
+        color: "rgba(102, 102, 102, 0.66)",
+        letterSpacing: 1,
+        fontFamily: "light"
+    },
 })
 
 

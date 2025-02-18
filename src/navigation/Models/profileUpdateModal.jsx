@@ -156,7 +156,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                         <Text style={styles.input_header}>Name</Text>
                         <TextBox
                             placeholder={userData.name}
-                            value={name}
+                            value={userData.name}
                             editable={false}
                             style={styles.input}
                         />
@@ -174,7 +174,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                         <Text style={styles.input_header}>Designation</Text>
                         <TextBox
                             placeholder={userData.designation}
-                            value={designation}
+                            value={userData.designation}
                             editable={true}
                             style={styles.input}
                             onChangeText={setDesignation}
@@ -214,7 +214,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.button}>
-                            <MyButton buttonTitle="Choose File" onClick={pickImage} backgroundColor="#FFc90f" color="#fefefe" />
+                            <MyButton buttonTitle="Choose File" onClick={pickImage} backgroundColor="#FFc90f" color="#fefefe" borderRadius={10} />
                             {getImage && (
                                 <View style={styles.image_block}>
                                     <Text style={{ fontFamily: "medium" }}>Selected Image:</Text>
@@ -223,7 +223,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                             )}
                         </View>
                     </View>
-                    {loading ? (<MyButton buttonTitle="Updating" color="#fff" backgroundColor="#9fd4d5" style={styles.update} />) : (<MyButton onClick={handleUpdate} buttonTitle="Update" color="#fff" backgroundColor="#9fd4d5" style={styles.update} />)}
+                    {loading ? (<MyButton buttonTitle="Updating" color="#fff" backgroundColor="#9fd4d5" borderRadius="30" />) : (<MyButton onClick={handleUpdate} buttonTitle="Update" borderRadius={30} width={"100%"} color="#fff" backgroundColor="#9fd4d5" style={styles.update} />)}
 
                 </View>
                 {open && (
