@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import MyButton from "../../navigation/MyButton"
 import ProfileUpdateModal from '../../navigation/Models/profileUpdateModal'
 import config from '../../../config'
+import { Colors } from '../../../constants/Colors'
 
 
 const UpdateProfile = () => {
@@ -90,7 +91,7 @@ const UpdateProfile = () => {
                         <Text style={styles.input}>{userData.dob ? userData.dob : "NA"}</Text>
                     </View>
                     <View style={styles.button}>
-                        <MyButton onClick={handleEdit} buttonTitle="Edit" color="#fff" backgroundColor="#9fd4d5" borderRadius={30} width={"100%"} />
+                        <MyButton onClick={handleEdit} buttonTitle="Edit" color="#fff" backgroundColor={Colors.dark.primary} borderRadius={30} width={"100%"} />
                     </View>
                 </View>
             </View>

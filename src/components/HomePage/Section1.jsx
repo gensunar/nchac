@@ -7,7 +7,7 @@ import { useRef } from 'react';
 
 const Section1 = () => {
     const [activeIndex, setActiveIndex] = useState(0)
-    const screenWidth = Dimensions.get("window").width
+    const screenWidth = Dimensions.get("window").width-14
     const router = useRouter()
     const onContinue = () => {
         router.push('/contact')
@@ -77,7 +77,7 @@ const Section1 = () => {
 
     const renderItem = ({ item, index }) => {
         return (
-            <Image source={{ uri: item.image }} style={{ height: 250, width: screenWidth, objectFit: "fill", }} />
+            <Image source={{ uri: item.image }} style={{ height: 190, width: screenWidth, objectFit: "fill",borderRadius:15 }} />
         )
     }
 
@@ -108,10 +108,13 @@ const Section1 = () => {
 
 const styles = StyleSheet.create({
     container: {
-        border: 1,
-        borderColor: "red",
+        marginTop: 10,
+        paddingLeft: 7,
+        paddingRight: 7,
+        height: 200,
     },
     card: {
+        borderRadius:10,
     }
     // image_container: {
     //     position: "relative",

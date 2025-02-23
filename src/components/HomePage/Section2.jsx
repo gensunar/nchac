@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-web'
+import { Colors } from '../../../constants/Colors'
 
 const Section2 = () => {
     // render
@@ -8,7 +9,7 @@ const Section2 = () => {
         <View style={styles.container}>
             <View style={styles.first_card}>
                 <Image source={{uri : `https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg`}} style={styles.image} />
-                <Text style={styles.header}>Shri Exch Ftradg</Text>
+                <Text style={styles.header}>Shri Calendar Pandey</Text>
                 <Text style={styles.sub_header}>Hon'ble Chief Executive Member</Text>
             </View>
             <View style={styles.second_card}>
@@ -35,32 +36,39 @@ const styles = StyleSheet.create({
     },
     first_card: {
         padding: 30,
-        height: 450,
+        height: 240,
         gap: 8,
+        alignItems: "center",
     },
     image: {
-        height: 400,
-        width: "100%",
-        objectFit: 'cover'
+        height: 200,
+        width: 200,
+        objectFit: 'contain',
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: Colors.dark.secondary,
     },
     header: {
         fontSize: 24,
-        fontFamily: "medium"
+        fontFamily: "roboto-bold",
+        textAlign: "center",
     }, 
     sub_header: {
-        fontFamily: "regular",
+        fontFamily: "roboto-extra-light",
         fontSize: 16,
+        marginTop: -12,
+        textAlign: "center",
     },
     second_card: {
-        padding: 30,
+        padding: 20,
         marginTop: 15,
     },
     message_header1: {
-        fontFamily: "medium",
+        fontFamily: "roboto-bold",
         fontSize: 20,
     },
     message_header: {
-        fontFamily: "regular",
+        fontFamily: "roboto-medium",
         marginTop: 9,
         fontSize: 16,
     },

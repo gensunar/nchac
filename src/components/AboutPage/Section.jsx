@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, Touchable, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedItemSlice } from "../../store/slices/selectedItemSlice"
+import { Colors } from '../../../constants/Colors'
 
 const Section = () => {
     const router = useRouter()
@@ -60,14 +61,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     button: {
-        backgroundColor: "red",
+        backgroundColor: Colors.dark.secondary,
         borderRadius: 12,
         padding: 15,
     },
     text: {
         color: "#fff",
         fontSize: 16,
-        fontWeight: "bold"
+       fontFamily: "medium"
     },
     active_text: {
         color: "red",

@@ -6,6 +6,10 @@ import MyButton from '../../navigation/MyButton'
 import axios from 'axios'
 import { base_url } from '../../../constants/url'
 import config from '../../../config'
+import useLocation from "../../hooks/useLocation"
+import { getPreciseDistance } from 'geolib'
+import { Colors } from '../../../constants/Colors'
+
 
 const AttendancePage = () => {
     const user = useSelector((state) => state.user)
@@ -17,8 +21,18 @@ const AttendancePage = () => {
     const [absentDays, setAbsentDays] = useState()
     const [attendanceLength, setAttendanceLength] = useState()
 
+    const { latitude, location, longitude, errorMsg, locationText, distance } = useLocation()
+
     const markAttendance = async () => {
         try {
+            if (!location) {
+                Alert.alert("Error", "You need location Permission")
+                return
+            }
+            if(distance > 300){
+                Alert.alert(`${distance}`,"Distance should be less than 200m")
+                return
+            }
             const token = await auth.currentUser?.getIdToken()
             const res = await axios.post(`${config.baseUrl}/api/user/mark-attendance`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -79,14 +93,13 @@ const AttendancePage = () => {
         );
     }
 
-
     // render
     return (
         <ScrollView style={styles.main_container}>
             <View style={styles.user_info}>
                 <Text style={styles.user_name_bold}>{day} <Text style={styles.user_name}> {userData.name}</Text></Text>
                 <View style={styles.button}>
-                    <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor="#FFDB58" color="#fff" width="100%"/>
+                    <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor={Colors.dark.primary} color="#fff" width="100%" borderRadius={20} />
                 </View>
             </View>
             <View style={styles.container}>
@@ -116,8 +129,8 @@ const AttendancePage = () => {
                 <View style={styles.bottom}>
                     <View style={styles.status_column}>
                         <View style={styles.status_header}>
-                            <Text style={[styles.status_data, { color: "#93C572" }]}>Present:</Text>
-                            <Text style={{ color: "#93c572" }}> {presentDays}</Text>
+                            <Text style={[styles.status_data, { color: Colors.dark.primary }]}>Present:</Text>
+                            <Text style={{ color: Colors.dark.primary }}> {presentDays}</Text>
                         </View>
                         <View style={styles.status_header}>
                             <Text style={[styles.status_data, { color: "red" }]}>Absent:</Text>
@@ -125,8 +138,8 @@ const AttendancePage = () => {
                         </View>
                     </View>
                     <View style={styles.status_header}>
-                        <Text style={[styles.status_data, { color: "#93C572" }]}>Total:</Text>
-                        <Text style={{ color: "#93c572" }}> {attendanceLength}</Text>
+                        <Text style={[styles.status_data, { color: Colors.dark.primary }]}>Total:</Text>
+                        <Text style={{ color: Colors.dark.primary }}> {attendanceLength}</Text>
                     </View>
                 </View>
             </View>
@@ -152,7 +165,7 @@ const styles = StyleSheet.create({
     user_name_bold: {
         fontFamily: "medium",
         fontSize: 18,
-        color: "#93C572"
+        color: Colors.dark.primary
     },
     user_name: {
         fontFamily: "light",
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
         paddingTop: 30,
-        paddingBottom:60,
+        paddingBottom: 60,
         // backgroundColor: '#fff',
     },
     header_row: {
@@ -222,7 +235,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontFamily: "semi-bold",
-        color: "#93C572"
+        color: Colors.dark.primary
     },
     cell: {
         textAlign: "center",

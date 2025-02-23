@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import * as Location from "expo-location"
-import * as TaskManager from 'expo-task-manager';
+import { getPreciseDistance } from 'geolib';
+
 
 const useLocation = () => {
 
@@ -10,48 +11,111 @@ const useLocation = () => {
     const [latitude, setLatitude] = useState(null)
     const [longitude, setLongitude] = useState(null)
     const [locationText, setLocationText] = useState([])
-
+    const [distance, setDistance] = useState(null)
 
     const requestPermission = async () => {
-        const foreground = await Location.requestForegroundPermissionsAsync();
-        if (foreground.status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return;
+        let permissionGranted = false;
+
+        while (!permissionGranted) {
+            try {
+                const { status } = await Location.requestForegroundPermissionsAsync();
+
+                if (status === 'granted') {
+                    permissionGranted = true;
+                    return true; // Permission granted
+                } else {
+                    // Show an alert and ask again
+                    const shouldRetry = await new Promise((resolve) => {
+                        Alert.alert(
+                            'Location Permission Required',
+                            'This app needs access to your location. Please grant location permission to continue.',
+                            [
+                                { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
+                                { text: 'Try Again', onPress: () => resolve(true) },
+                            ]
+                        );
+                    });
+
+                    if (!shouldRetry) {
+                        setErrorMsg('Permission to access location was denied');
+                        return false;
+                    }
+                }
+            } catch (error) {
+                setErrorMsg('Error requesting location permission');
+                return false;
+            }
+        }
+        // try {
+        //     const { status } = await Location.requestForegroundPermissionsAsync()
+        //     if (status !== 'granted') {
+        //         setErrorMsg("Permission to access location was denied")
+        //         return false
+        //     }
+        //     return true
+        // } catch (error) {
+        //     console.error('Permission error:', error);
+        //     setErrorMsg(error)
+        // }
+    };
+
+    const getCurrentLocation = async () => {
+        const permitted = await requestPermission()
+        if (!permitted) return
+
+        try {
+            await Location.watchPositionAsync({
+                accuracy: Location.Accuracy.High,
+                timeInterval: 5000, // Update every 5 seconds
+                distanceInterval: 10,
+            }, async (newLocation) => {
+                try {
+                    const { latitude, longitude } = newLocation.coords
+                    setLatitude(latitude)
+                    setLongitude(longitude)
+                    setLocation(newLocation.coords)
+                    const response = await Location.reverseGeocodeAsync({
+                        latitude,
+                        longitude,
+                    })
+                    setLocationText(response)
+
+                    var distanceData = getPreciseDistance(
+                        { latitude, longitude },
+                        { latitude: 25.191766059505806, longitude: 93.02257052660393 }
+                    )
+                   setDistance(distanceData)
+                }
+                catch (e) {
+                    setErrorMsg(e.Error)
+                }
+            });
+        } catch (e) {
+            setErrorMsg(e.data)
+            console.log(e)
         }
     }
 
-    const getCurrentLocation = async () => {
-        await Location.watchPositionAsync({
-            accuracy: Location.Accuracy.High,
-            timeInterval: 5000, // Update every 5 seconds
-            distanceInterval: 10,
-        }, (newLocation) => {
-            setLocation(newLocation.coords);
-        });
-        const { latitude, longitude } = location
-        setLatitude(latitude)
-        setLongitude(longitude)
-        console.log(location)
-        let response = await Location.reverseGeocodeAsync({
-            latitude,
-            longitude,
-        })
-        setLocationText(response)
-    }
-console.log(locationText)
-
     useEffect(() => {
-        requestPermission()
         getCurrentLocation()
+        
+        const interval = setInterval(() => {
+            if (location) {
+                requestPermission()
+                getCurrentLocation()
+            }
+        }, 10000)
+        return () => clearInterval(interval)
     }, [])
 
+       
     let text = 'Waiting...';
     if (errorMsg) {
         text = errorMsg;
     } else if (location) {
         text = JSON.stringify(location);
     }
-    return { latitude, longitude, errorMsg, locationText }
+    return { latitude, longitude, errorMsg, locationText, location, distance }
 }
 
 export default useLocation

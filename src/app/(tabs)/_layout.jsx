@@ -5,6 +5,7 @@ import {store, persistor} from "../../store/store"
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { useFonts } from "expo-font"
 
@@ -12,14 +13,19 @@ const RootLayout = () => {
 
     useFonts({
         'bold': require("../../../assets/fonts/Poppins-Bold.ttf"),
-        'bold-italic': require('../../../assets/fonts/Poppins-BoldItalic.ttf'),
         'black': require('../../../assets/fonts/Poppins-Black.ttf'),
-        'black-italic': require('../../../assets/fonts/Poppins-BlackItalic.ttf'),
         'regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
         'semi-bold': require('../../../assets/fonts/Poppins-SemiBold.ttf'),
         'medium': require('../../../assets/fonts/Poppins-Medium.ttf'),
         'extra-light': require('../../../assets/fonts/Poppins-ExtraLight.ttf'),
-        'light': require('../../../assets/fonts/Poppins-Light.ttf')
+        'light': require('../../../assets/fonts/Poppins-Light.ttf'), 
+        'roboto-regular': require('../../../assets/fonts/Roboto-Regular.ttf'),
+        'roboto-thin': require('../../../assets/fonts/Roboto-Thin.ttf'),
+        'roboto-medium': require('../../../assets/fonts/Roboto-Medium.ttf'),
+        'roboto-light': require('../../../assets/fonts/Roboto-Light.ttf'),
+        'roboto-extra-light': require('../../../assets/fonts/Roboto-ExtraLight.ttf'),
+        'roboto-bold': require('../../../assets/fonts/Roboto-Bold.ttf'),
+
     })
 
 
@@ -28,31 +34,31 @@ const RootLayout = () => {
         <Provider store={store}>
             <PersistGate loading={<Text>Loading</Text>} persistor={persistor}>
                 <Tabs screenOptions={{
-                    tabBarActiveTintColor: '#ABE098',
-                    tabBarInactiveTintColor: '#FF4646',
+                    tabBarActiveTintColor: '#097969',
+                    tabBarInactiveTintColor: '#01889f',
                     tabBarStyle: { backgroundColor: 'white', height: 60,},
-                    tabBarLabelStyle: { fontSize: 10, fontWeight: 'normal', letterSpacing: 1, fontFamily: "medium",},
-                    tabBarItemStyle: { position: 'relative' }, headerShown: false
+                    tabBarLabelStyle: { fontSize: 10, fontFamily: "roboto-medium", },
+                    tabBarItemStyle: { position: 'relative', paddingRight: 3, paddingLeft: 3}, headerShown: false
                 }}>
                     <Tabs.Screen name="home" options={{
                         tabBarLabel: "home", title: "Home",
-                        tabBarIcon: ({ color }) => <FontAwesome size={24} name="home" color={color} />,
+                        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home-outline" size={28} color={color} />,
                     }} />
                     <Tabs.Screen name="about" options={{
                         tabBarLabel: "about", title: "About",
-                        tabBarIcon: ({ color }) => <Ionicons name="information-circle" size={24} color={color} />
+                        tabBarIcon: ({ color }) => <Ionicons name="information-circle-outline" size={28} color={color} />
                     }} />
                     <Tabs.Screen name="departments" options={{
                         tabBarLabel: "department", title: "Department",
-                        tabBarIcon: ({ color }) => <FontAwesome6 name="building-columns" size={24} color={color} />
+                        tabBarIcon: ({ color }) =><MaterialCommunityIcons name="office-building-outline" size={28} color={color} />
                     }} />
                     <Tabs.Screen name="contact" options={{
                         tabBarLabel: "contact", title: "Contact",
-                        tabBarIcon: ({ color }) => <FontAwesome name="phone" size={24} color={color} />
+                        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="phone" size={28} color={color} />
                     }} />
                     <Tabs.Screen name="citizen" options={{
                         tabBarLabel: "citizen", title: "Citizen", headerShown: false,
-                        tabBarIcon: ({ color }) => <FontAwesome6 name="people-line" size={24} color={color} />
+                        tabBarIcon: ({ color }) => <Ionicons name="people-outline" size={28} color={color} />
                     }} />
                 </Tabs>
             </PersistGate>

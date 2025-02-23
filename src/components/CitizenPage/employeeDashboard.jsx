@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, Image, SafeAreaView } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet, Image, SafeAreaView, Alert } from 'react-native'
 import MyButton from '../../navigation/MyButton'
 import { auth, db } from '../../../firebase'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
@@ -10,6 +10,8 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios'
 import config from '../../../config'
 import useLocation from '../../hooks/useLocation'
+import { getPreciseDistance } from 'geolib'
+import {Colors} from "../../../constants/Colors"
 
 const Login = React.lazy(() => import('../../app/(tabs)/citizen/login'));
 
@@ -21,9 +23,8 @@ const employeeDashboard = () => {
     const [userSnapData, setUserSnapData] = useState({})
     const [fetchUser, setFetchUser] = useState({})
     const [loading, setLoading] = useState(true)
-    const [showUpdateForm, setShowUpdateForm] = useState(false)
-    const [refreshProfile, setRefreshProfile] = useState(false);
-    const { latitude, longitude, errorMsg, locationText } = useLocation()
+
+    const { latitude, longitude, errorMsg, locationText, location } = useLocation()
 
     const router = useRouter()
 
@@ -39,6 +40,30 @@ const employeeDashboard = () => {
         }
     }
 
+    const calculatePreciseDistance = () => {
+        var distance = getPreciseDistance(
+            { latitude, longitude },
+            { latitude: 25.191766059505806, longitude: 93.02257052660393 }
+        )
+        Alert.alert(`Precise Distance ${distance / 1000}`)
+    }
+
+    // const calculatePreciseDistance = () => {
+    //     const R = 6371
+    //     const lat1 = 25.5105078 * Math.PI / 180
+    //     const lon1 = 92.7376857 * Math.PI / 180
+    //     const lat2 = 25.191766059505806 * Math.PI / 180
+    //     const lon2 = 93.02257052660393 * Math.PI / 180
+
+    //     const dLat = lat2 - lat1
+    //     const dLon = lon2 - lon1
+
+    //     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    //         Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    //     console.log(R*c)
+    // }
 
     const fetchProfileData = async () => {
         try {
@@ -95,7 +120,6 @@ const employeeDashboard = () => {
         return null
     }
 
-    console.log(locationText)
     if (user?.isLoggedIn && !user.isLoading) {
         return (
             <>
@@ -124,19 +148,19 @@ const employeeDashboard = () => {
                         </View>
                         <View style={styles.button}>
                             <>
-                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor="#ABE098" borderRadius={30} />
-                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor="#FF4646" borderRadius={30} />
+                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor={Colors.dark.primary} borderRadius={30} width={150}/>
+                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor={Colors.dark.secondary} borderRadius={30} width={180} />
                             </>
                         </View>
                     </View>
                     <View style={styles.card_section}>
                         <View style={styles.card}>
                             <View style={styles.data_section}>
-                                <AntDesign name="profile" size={50} color="#FFBF00" style={styles.icon} />
+                                <AntDesign name="profile" size={50} color={Colors.dark.primary} style={styles.icon} />
                                 <Link style={styles.text} href="/citizen/profile"><Text style={styles.text}>Profile</Text></Link>
                             </View>
                             <View style={styles.data_section}>
-                                <AntDesign name="calendar" size={50} color="#FFBF00" style={styles.icon} />
+                                <AntDesign name="calendar" size={50} color={Colors.dark.primary} style={styles.icon} />
                                 <Link style={styles.text} href="/citizen/attendance"><Text >Attendance</Text></Link>
                             </View>
                         </View>
@@ -181,7 +205,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 26,
-        fontFamily: "medium",
+        fontFamily: "medium", 
         marginBottom: -8,
         letterSpacing: 1,
     },

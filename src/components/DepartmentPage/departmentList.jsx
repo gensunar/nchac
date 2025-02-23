@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, ScrollView, Image, SafeAreaView } from 'react-native'
 import { departments, department } from "../../../constants/departmentData"
+import { Colors } from '../../../constants/Colors';
 
 
 
@@ -9,7 +10,7 @@ const DepartmentList = () => {
     return (
         <View style={styles.container}>
             <View style={styles.text_container}>
-                <Text style={styles.header}>DEPARTMENTS</Text>
+                <Text style={styles.header}>Departments</Text>
             </View>
             <View style={styles.department}>
                 <View style={styles.ent_department}>
@@ -64,8 +65,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     text_container: {
-        backgroundColor: "red",
-        height: 100,
+        height: 80,
+        backgroundColor: Colors.dark.primary,
         justifyContent: "center",
     },
     header: {
@@ -77,8 +78,7 @@ const styles = StyleSheet.create({
     },
     header_text: {
         fontSize: 20,
-        fontWeight: "500",
-        fontFamily: "semi-bold",
+        fontFamily: "medium",
         marginBottom: 10,
     },
     definition: {

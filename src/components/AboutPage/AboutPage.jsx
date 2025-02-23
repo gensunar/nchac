@@ -4,6 +4,7 @@ import { setSelectedItemSlice } from '../../store/slices/selectedItemSlice'
 import { useDispatch } from 'react-redux';
 import Section from './Section';
 import MyButton from '../../navigation/MyButton';
+import {Colors} from "../../../constants/Colors"
 
 const AboutPage = () => {
     const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const AboutPage = () => {
                         Constitution of India. The Dima Hasao District is administered by
                         North Cachar Hills Autonomous Council (NCHAC). {showMore && "The Autonomous Council is a powerful body and almost all the department of government are under its control except the police and Law & Order is under Assam Government. The district is situated at Southern part of Assam in the North East Region of India. The total area of the district is 4890 Sq.Kms. The major part of district is covered by the hills.The main range is Borail which “Tumjang” is the highest peak at 1866 meter & Hempeupet is the second heighst peak at 1748 meter.The other main range is Khartong range from Dittokcherra to Garampani.The total forest cover of the District is 63777.40 hectare."}
                     </Text>
-                    <MyButton buttonTitle={showMore ? "Read Less" : "Read More"} onClick={handleReadMore} />
+                    <MyButton buttonTitle={showMore ? "Read Less" : "Read More"} onClick={handleReadMore} backgroundColor={Colors.dark.secondary} color="#fff" borderRadius={20} width={150} />
                 </View>
                 <Text style={styles.stat_header}>Basic Statistic</Text>
                 <View style={styles.stat_data}>
@@ -72,7 +73,7 @@ const AboutPage = () => {
                     <Text style={styles.stat_header}>History</Text>
                     <Text style={styles.text}>Dima Hasao was an integral part of the Cachari Kingdom of old and was inhabited by the Dimasa Kacharis as well as by a myriad of other tribal groups like the Zeme Nagas, Hmars, Kukis, Biates, Hrangkhols, Karbis etc. who are extant to this day within the district. When the British arrived, this  {showMoreHistory && "hill district along with adjacent Karbi Anglong were declared as 'partially excluded areas' and, therefore, official legislation did not apply or were applied with modifications as the case may be. On the eve of Independence, various delegations from these two districts made representations before the Bordoloi Committee for a separate autonomous administrative set-up for the safeguard of tribals who were culturally, ethnically and linguistically distinct from the people of the plains."}
                     </Text>
-                    <MyButton buttonTitle={!showMoreHistory ? "Read More" : "Read Less"} onClick={handleHistory} />
+                    <MyButton buttonTitle={!showMoreHistory ? "Read More" : "Read Less"} onClick={handleHistory} backgroundColor={Colors.dark.secondary} color="#fff" borderRadius={20} width={150} />
                 </View>
                 <View>
                     <Text style={styles.stat_header}>Administrative Structure</Text>
@@ -80,7 +81,7 @@ const AboutPage = () => {
 
                     <Text style={styles.text}>{show && "All the subjects over which the NCHAC has jurisdiction are divided among members of this executive body called Executive Council. The permanent executive, on the other hand, is headed by two Principal Secretaries, one who looks after the inherent subjects and is named Principal Secretary (Normal), and one who looks after the entrusted subjects and is named Principal Secretary (Transferable) who is deputed by the state government and belongs to the ACS or IAS cadre holding a rank of state Joint Secretary and above. Then there are the Secretaries, Joint Secretaries, Deputy Secretaries and Under-Secretaries across both verticals (Normal and Transferable) some of whom are appointed by the NCHAC and some who are deputed by the state from ACS or IAS cadres. All officers of the line departments are placed at the disposal of the Executive Council and executive orders are to be carried out by the permanent executive who are aided by these officers of the line departments."}</Text>
 
-                    <MyButton buttonTitle={!show ? "Read More" : "Read Less"} onClick={handleAdministrative} />
+                    <MyButton buttonTitle={!show ? "Read More" : "Read Less"} onClick={handleAdministrative} backgroundColor={Colors.dark.secondary} color="#fff" borderRadius={20} width={150} />
                 </View>
             </View>
         </ScrollView>
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     text_container: {
-        height: 100,
-        backgroundColor: "red",
+        height: 80,
+        backgroundColor: Colors.dark.primary,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -105,11 +106,11 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     header_text: {
-        fontFamily: "bold",
+        fontFamily: "medium",
         fontSize: 22,
     },
     sub_header_text: {
-        fontFamily: 'semi-bold',
+        fontFamily: 'regular',
         fontSize: 18,
         marginBottom: 20
     },
@@ -124,7 +125,8 @@ const styles = StyleSheet.create({
     image: {
         height: 400,
         width: "100%",
-        objectFit: "fill"
+        objectFit: "fill", 
+        borderRadius: 10,
     },
     stat_header: {
         fontSize: 20,
