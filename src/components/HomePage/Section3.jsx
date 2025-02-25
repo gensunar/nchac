@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, ScrollView, Image } from 'react-native'
 import { electedMembers } from "../../../constants/maclist"
+import { Colors } from '../../../constants/Colors'
 
 
 const Section3 = () => {
@@ -36,23 +37,22 @@ const styles = StyleSheet.create({
     },
     text_container: {
         height: "15%",
-        backgroundColor: "#01889f",
+        backgroundColor: Colors.primary,
         justifyContent: "center",
         alignItems: "center",
     },
     header: {
         textAlign: "center",
         textDecorationLine: "underline",
-        textDecorationColor: "green",
         fontFamily: "roboto-bold",
         fontSize: 28,
-        color: "#fff"
+        color: Colors.white,
     },
     items_container: {
         padding: 15,
     },
     render_container: {
-        backgroundColor: "white",
+        backgroundColor: Colors.white,
         padding: 10,
         borderRadius: 10,
         marginRight: 10,

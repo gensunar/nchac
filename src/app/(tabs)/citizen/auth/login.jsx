@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import LoginPage from "../../../components/CitizenPage/LoginPage"
+import LoginPage from "../../../../components/Auth/LoginPage"
 import { Stack } from 'expo-router'
 
 const login = () => {

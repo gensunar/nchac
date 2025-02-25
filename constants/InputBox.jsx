@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 
 
-const InputBox = ({ placeholder, value, onChangeText, secureTextEntry, keyboardType, maxLength, editable }) => {
+const InputBox = ({ placeholder, value, onChangeText, secureTextEntry, keyboardType, maxLength, editable, multiline, height }) => {
     // render
     return (
         <View style={styles.container}>
@@ -15,6 +15,8 @@ const InputBox = ({ placeholder, value, onChangeText, secureTextEntry, keyboardT
                 keyboardType={keyboardType}
                 maxLength={maxLength}
                 editable={editable}
+                multiline= {multiline}
+                height= {height}
             />
         </View>
     )

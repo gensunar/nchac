@@ -91,7 +91,7 @@ const UpdateProfile = () => {
                         <Text style={styles.input}>{userData.dob ? userData.dob : "NA"}</Text>
                     </View>
                     <View style={styles.button}>
-                        <MyButton onClick={handleEdit} buttonTitle="Edit" color="#fff" backgroundColor={Colors.dark.primary} borderRadius={30} width={"100%"} />
+                        <MyButton onClick={handleEdit} buttonTitle="Edit" color="#fff" backgroundColor={Colors.primary} borderRadius={30} width={"100%"} />
                     </View>
                 </View>
             </View>
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
         marginVertical: 12,
     },
     profile_image: {
-        backgroundColor: "rgb(255,255,255)",
+        backgroundColor: Colors.white,
         borderRadius: 10,
         paddingVertical: 20,
     },
     profile_data: {
-        backgroundColor: "rgb(255,255,255)",
+        backgroundColor: Colors.white,
         marginTop: 20,
         borderRadius: 10,
         paddingVertical: 25,

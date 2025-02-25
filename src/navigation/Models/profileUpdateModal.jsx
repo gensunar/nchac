@@ -215,7 +215,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.button}>
-                            <MyButton buttonTitle="Choose File" onClick={pickImage} backgroundColor={Colors.dark.secondary} color="#fefefe" borderRadius={10} />
+                            <MyButton buttonTitle="Choose File" onClick={pickImage} backgroundColor={Colors.secondary} color="#fefefe" borderRadius={10} />
                             {getImage && (
                                 <View style={styles.image_block}>
                                     <Text style={{ fontFamily: "medium" }}>Selected Image:</Text>
@@ -224,7 +224,7 @@ const ProfileUpdateModal = ({ visible, onClose, title, onUpdate  }) => {
                             )}
                         </View>
                     </View>
-                    {loading ? (<MyButton buttonTitle="Updating" color="#fff" backgroundColor={Colors.dark.primary} borderRadius="30" />) : (<MyButton onClick={handleUpdate} buttonTitle="Update" borderRadius={30} width={"100%"} color="#fff" backgroundColor={Colors.dark.primary} style={styles.update} />)}
+                    {loading ? (<MyButton buttonTitle="Updating" color="#fff" backgroundColor={Colors.primary} borderRadius="30" />) : (<MyButton onClick={handleUpdate} buttonTitle="Update" borderRadius={30} width={"100%"} color={Colors.white} backgroundColor={Colors.primary} style={styles.update} />)}
 
                 </View>
                 {open && (

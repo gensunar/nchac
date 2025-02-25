@@ -1,20 +1,17 @@
 import { Link, Stack } from 'expo-router'
 import React from 'react'
 import { View, Text } from 'react-native'
+import CitizenMainPage from '../../../components/CitizenPage/CitizenMainPage'
 
-const index = () => {
-    // render
+const Home = () => {
     return (
         <>
             <Stack.Screen options={{ headerShown: true, title: "Citizen" }} />
             <View>
-                <Link href="/citizen/registration">Go to Registration</Link>
-                <Link href="/citizen/teacher">Go to Teacher Login System</Link>
-                <Link  href="/citizen/Dashboard"><Text >Dashboard</Text></Link>
-
+                <CitizenMainPage />
             </View>
         </>
     )
 }
 
-export default index
+export default Home

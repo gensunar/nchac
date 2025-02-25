@@ -232,7 +232,7 @@ export const electedMembers = [
     "id": 1,
     "constituency": "01-Haflong",
     "elected_member": "Shri Donpainon Thaosen",
-    "iconLink": "https://placehold.co/600x400/png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg",
     "departments": "ELEMENTARY EDUCATION",
     "other_subjects": "",
     "contact": "+91 98765 43210"
@@ -241,7 +241,7 @@ export const electedMembers = [
     "id": 3,
     "constituency": "04-Mahur",
     "elected_member": "Smt Probita Johari",
-    "iconLink": "https://example.com/icons/mahur-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg",
     "departments": "HANDLOOM & TEXTILE, SERICULTURE, SPORTS & YOUTH AFFAIRS",
     "other_subjects": "",
     "contact": "+91 87654 32109"
@@ -250,7 +250,7 @@ export const electedMembers = [
     "id": 11,
     "constituency": "05-Jinam",
     "elected_member": "Shri Zosumthang Hmar",
-    "iconLink": "https://example.com/icons/jinam-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/v1738944291/samples/upscale-face-1.jpg",
     "departments": "WATER RESOURCE",
     "other_subjects": "Council PWD, Industries, DIPRO",
     "contact": "+91 76543 21987"
@@ -259,7 +259,7 @@ export const electedMembers = [
     "id": 4,
     "constituency": "12-Wajao",
     "elected_member": "Shri Biswajit Daulagupu",
-    "iconLink": "https://example.com/icons/wajao-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg",
     "departments": "SOIL CONSERVATION",
     "other_subjects": "",
     "contact": "+91 99887 66554"
@@ -268,7 +268,7 @@ export const electedMembers = [
     "id": 5,
     "constituency": "21-Hadingma",
     "elected_member": "Shri Debojit Bathari",
-    "iconLink": "https://example.com/icons/hadingma-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/v1738944291/samples/upscale-face-1.jpg",
     "departments": "AGRICULTURE",
     "other_subjects": "",
     "contact": "+91 91234 87654"
@@ -277,7 +277,7 @@ export const electedMembers = [
     "id": 2,
     "constituency": "24-Hamri",
     "elected_member": "Shri Monjit Naiding",
-    "iconLink": "https://example.com/icons/hamri-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/v1738944281/samples/people/smiling-man.jpg",
     "departments": "ANIMAL HUSBANDRY & VET, CULTURAL AFFAIRS",
     "other_subjects": "",
     "contact": "+91 91234 56789"
@@ -286,7 +286,7 @@ export const electedMembers = [
     "id": 6,
     "constituency": "27-Diger",
     "elected_member": "Shri Han Samuel Changsan",
-    "iconLink": "https://example.com/icons/diger-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/v1738944281/samples/people/smiling-man.jpg",
     "departments": "HEALTH & FAMILY WELFARE",
     "other_subjects": "",
     "contact": "+91 78901 23456"
@@ -313,7 +313,7 @@ export const electedMembers = [
     "id": 9,
     "constituency": "17-Garampani",
     "elected_member": "Shri Samsing Ingti",
-    "iconLink": "https://example.com/icons/garampani-icon.png",
+    "iconLink": "https://res.cloudinary.com/ds4adb2me/image/upload/v1738944281/samples/people/smiling-man.jpg",
     "departments": "CO-OPERATION, FISHERIES, FOOD & CIVIL SUPPLIES",
     "other_subjects": "",
     "contact": "+91 78965 43210"

@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router'
 import React from 'react'
 import { View, Text } from 'react-native'
-import RegistrationPage from '../../../components/CitizenPage/RegistrationPage'
+import RegistrationPage from '../../../../components/Auth/RegistrationPage'
 
 const registration = () => {
     // render

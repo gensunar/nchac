@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedItemSlice } from '../../store/slices/selectedItemSlice'
 import Section from './Section'
 import { allMembers } from "../../../constants/maclist"
+import { Colors } from '../../../constants/Colors'
 
 const ConstituenciesPage = () => {
     // const windowHeight = Dimensions.get('window').height;
@@ -47,8 +48,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     text_container: {
-        height: 100,
-        backgroundColor: "red",
+        height: 80,
+        backgroundColor:Colors.primary,
         justifyContent: "center",
         alignItems: "center"
     },

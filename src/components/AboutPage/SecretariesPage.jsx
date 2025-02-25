@@ -4,6 +4,7 @@ import { setSelectedItemSlice } from "../../store/slices/selectedItemSlice"
 import { useDispatch } from 'react-redux';
 import Section from './Section';
 import { secretaries } from "../../../constants/secretaries"
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const Secretaries = () => {
     const dispatch = useDispatch();
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     text_container: {
-        height: 100,
-        backgroundColor: "red",
+        height: 80,
+        backgroundColor: Colors.primary,
         justifyContent: "center",
         alignItems: "center"
     },

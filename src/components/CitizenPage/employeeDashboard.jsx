@@ -1,9 +1,9 @@
 import React, { useEffect, useState, Suspense } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, Image, SafeAreaView, Alert } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet, Image, SafeAreaView, Alert, Linking } from 'react-native'
 import MyButton from '../../navigation/MyButton'
 import { auth, db } from '../../../firebase'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { Link, useRouter } from 'expo-router'
+import { Link, useNavigation, useRouter } from 'expo-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { register, logout } from '../../store/slices/user'
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -11,10 +11,7 @@ import axios from 'axios'
 import config from '../../../config'
 import useLocation from '../../hooks/useLocation'
 import { getPreciseDistance } from 'geolib'
-import {Colors} from "../../../constants/Colors"
-
-const Login = React.lazy(() => import('../../app/(tabs)/citizen/login'));
-
+import { Colors } from "../../../constants/Colors"
 
 const employeeDashboard = () => {
     const dispatch = useDispatch()
@@ -27,13 +24,14 @@ const employeeDashboard = () => {
     const { latitude, longitude, errorMsg, locationText, location } = useLocation()
 
     const router = useRouter()
+    const navigation = useNavigation()
 
     const handleLogout = async () => {
         try {
             await signOut(auth)
             dispatch(logout())
             setUserData(null)
-            router.replace("/citizen/registration")
+            router.replace("/citizen/auth/registration")
         }
         catch (e) {
             console.log(e)
@@ -115,11 +113,6 @@ const employeeDashboard = () => {
         );
     }
 
-    if (!user.isLoggedIn) {
-        router.replace("citizen/login")
-        return null
-    }
-
     if (user?.isLoggedIn && !user.isLoading) {
         return (
             <>
@@ -148,19 +141,19 @@ const employeeDashboard = () => {
                         </View>
                         <View style={styles.button}>
                             <>
-                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor={Colors.dark.primary} borderRadius={30} width={150}/>
-                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor={Colors.dark.secondary} borderRadius={30} width={180} />
+                                <MyButton onClick={handleAttendance} color="#fff" buttonTitle={"CHECK-IN"} backgroundColor={Colors.primary} borderRadius={30} width={150} />
+                                <MyButton onClick={handleLogout} color="#fff" buttonTitle={"CHECK-OUT"} backgroundColor={Colors.secondary} borderRadius={30} width={180} />
                             </>
                         </View>
                     </View>
                     <View style={styles.card_section}>
                         <View style={styles.card}>
                             <View style={styles.data_section}>
-                                <AntDesign name="profile" size={50} color={Colors.dark.primary} style={styles.icon} />
+                                <AntDesign name="profile" size={50} color={Colors.primary} style={styles.icon} />
                                 <Link style={styles.text} href="/citizen/profile"><Text style={styles.text}>Profile</Text></Link>
                             </View>
                             <View style={styles.data_section}>
-                                <AntDesign name="calendar" size={50} color={Colors.dark.primary} style={styles.icon} />
+                                <AntDesign name="calendar" size={50} color={Colors.primary} style={styles.icon} />
                                 <Link style={styles.text} href="/citizen/attendance"><Text >Attendance</Text></Link>
                             </View>
                         </View>
@@ -205,7 +198,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 26,
-        fontFamily: "medium", 
+        fontFamily: "medium",
         marginBottom: -8,
         letterSpacing: 1,
     },

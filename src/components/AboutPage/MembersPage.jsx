@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import Section from './Section'
 import { electedMembers } from '../../../constants/maclist'
 import { Link } from 'expo-router'
+import { Colors } from '../../../constants/Colors'
 
 const Members = () => {
 
@@ -50,8 +51,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     text_container: {
-        height: 100,
-        backgroundColor: "red",
+        height: 80,
+        backgroundColor: Colors.primary,
         justifyContent: "center",
         alignItems: "center"
     },

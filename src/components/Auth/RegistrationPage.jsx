@@ -5,12 +5,9 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import MyButton from '../../navigation/MyButton'
 import { Link, useRouter } from 'expo-router'
 import { auth, db } from '../../../firebase'
-import { doc, setDoc } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 import Dashboard from '../../app/(tabs)/citizen/Dashboard'
-import { register } from '../../store/slices/user'
 import axios from 'axios'
-import { base_url } from '../../../constants/url'
 import config from '../../../config'
 import registrationImage from "../../../assets/images/registration.png"
 import Feather from '@expo/vector-icons/Feather';

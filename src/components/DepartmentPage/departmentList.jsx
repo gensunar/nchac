@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
     },
     text_container: {
         height: 80,
-        backgroundColor: Colors.dark.primary,
+        backgroundColor: Colors.primary,
         justifyContent: "center",
     },
     header: {
-        color: "#fff",
+        color: Colors.white,
         textAlign: "center",
         fontSize: 32,
         fontWeight: "bold",

@@ -61,22 +61,21 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     button: {
-        backgroundColor: Colors.dark.secondary,
+        backgroundColor: Colors.secondary,
         borderRadius: 12,
         padding: 15,
     },
     text: {
-        color: "#fff",
+        color: Colors.white,
         fontSize: 16,
        fontFamily: "medium"
     },
     active_text: {
-        color: "red",
         fontWeight: "bold",
         fontSize: 16,
     },
     active: {
-        backgroundColor: "#fff",
+        backgroundColor: Colors.white,
         borderRadius: 12,
         padding: 15,
     },

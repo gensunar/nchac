@@ -29,7 +29,7 @@ const AttendancePage = () => {
                 Alert.alert("Error", "You need location Permission")
                 return
             }
-            if(distance > 300){
+            if(distance > 500){
                 Alert.alert(`${distance}`,"Distance should be less than 200m")
                 return
             }
@@ -99,7 +99,7 @@ const AttendancePage = () => {
             <View style={styles.user_info}>
                 <Text style={styles.user_name_bold}>{day} <Text style={styles.user_name}> {userData.name}</Text></Text>
                 <View style={styles.button}>
-                    <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor={Colors.dark.primary} color="#fff" width="100%" borderRadius={20} />
+                    <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor={Colors.primary} color={Colors.white} width="100%" borderRadius={20} />
                 </View>
             </View>
             <View style={styles.container}>
@@ -129,8 +129,8 @@ const AttendancePage = () => {
                 <View style={styles.bottom}>
                     <View style={styles.status_column}>
                         <View style={styles.status_header}>
-                            <Text style={[styles.status_data, { color: Colors.dark.primary }]}>Present:</Text>
-                            <Text style={{ color: Colors.dark.primary }}> {presentDays}</Text>
+                            <Text style={[styles.status_data, { color: Colors.primary }]}>Present:</Text>
+                            <Text style={{ color: Colors.primary }}> {presentDays}</Text>
                         </View>
                         <View style={styles.status_header}>
                             <Text style={[styles.status_data, { color: "red" }]}>Absent:</Text>
@@ -138,8 +138,8 @@ const AttendancePage = () => {
                         </View>
                     </View>
                     <View style={styles.status_header}>
-                        <Text style={[styles.status_data, { color: Colors.dark.primary }]}>Total:</Text>
-                        <Text style={{ color: Colors.dark.primary }}> {attendanceLength}</Text>
+                        <Text style={[styles.status_data, { color: Colors.primary }]}>Total:</Text>
+                        <Text style={{ color: Colors.primary }}> {attendanceLength}</Text>
                     </View>
                 </View>
             </View>
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         paddingBottom: 50,
     },
     user_info: {
-        backgroundColor: "#fff",
+        backgroundColor: Colors.white,
         borderRadius: 10,
         padding: 20,
         marginBottom: 10,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     user_name_bold: {
         fontFamily: "medium",
         fontSize: 18,
-        color: Colors.dark.primary
+        color: Colors.primary
     },
     user_name: {
         fontFamily: "light",
@@ -191,14 +191,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         fontFamily: "medium",
-        backgroundColor: '#fff',
+        backgroundColor: Colors.white,
         paddingVertical: 20,
         textAlignVertical: "center",
         borderRadius: 10,
         marginBottom: 10,
     },
     data: {
-        backgroundColor: "#fff",
+        backgroundColor: Colors.white,
         borderRadius: 10,
         padding: 15,
         marginVertical: 8,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontFamily: "semi-bold",
-        color: Colors.dark.primary
+        color: Colors.primary
     },
     cell: {
         textAlign: "center",

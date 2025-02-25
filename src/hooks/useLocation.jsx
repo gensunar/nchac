@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, Text, StyleSheet, Alert, Linking } from 'react-native'
 import * as Location from "expo-location"
 import { getPreciseDistance } from 'geolib';
 
@@ -31,7 +31,7 @@ const useLocation = () => {
                             'This app needs access to your location. Please grant location permission to continue.',
                             [
                                 { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
-                                { text: 'Try Again', onPress: () => resolve(true) },
+                                { text: 'Try Again', onPress: () => Linking.openSettings() },
                             ]
                         );
                     });

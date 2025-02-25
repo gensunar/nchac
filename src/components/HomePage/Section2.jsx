@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         objectFit: 'contain',
         borderRadius: 100,
         borderWidth: 2,
-        borderColor: Colors.dark.secondary,
+        borderColor: Colors.ssecondary,
     },
     header: {
         fontSize: 24,
