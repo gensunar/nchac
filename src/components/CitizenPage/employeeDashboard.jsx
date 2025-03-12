@@ -10,8 +10,9 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios'
 import config from '../../../config'
 import useLocation from '../../hooks/useLocation'
-import { getPreciseDistance } from 'geolib'
 import { Colors } from "../../../constants/Colors"
+import * as Location from "expo-location"
+
 
 const employeeDashboard = () => {
     const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const employeeDashboard = () => {
     const [fetchUser, setFetchUser] = useState({})
     const [loading, setLoading] = useState(true)
 
-    const { latitude, longitude, errorMsg, locationText, location } = useLocation()
+    const { latitude, longitude, errorMsg, locationText, location, loadingLocation } = useLocation()
 
     const router = useRouter()
     const navigation = useNavigation()
@@ -38,30 +39,22 @@ const employeeDashboard = () => {
         }
     }
 
-    const calculatePreciseDistance = () => {
-        var distance = getPreciseDistance(
-            { latitude, longitude },
-            { latitude: 25.191766059505806, longitude: 93.02257052660393 }
-        )
-        Alert.alert(`Precise Distance ${distance / 1000}`)
+
+    const postLocationData = async () => {
+        try{
+            const token = await auth.currentUser.getIdToken()
+            const response = await axios.post(`${config.baseUrl}/api/user/post-location`,
+                {latitude, longitude, location}, 
+                { 
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        }catch(e){
+            console.log(e)
+        }
     }
 
-    // const calculatePreciseDistance = () => {
-    //     const R = 6371
-    //     const lat1 = 25.5105078 * Math.PI / 180
-    //     const lon1 = 92.7376857 * Math.PI / 180
-    //     const lat2 = 25.191766059505806 * Math.PI / 180
-    //     const lon2 = 93.02257052660393 * Math.PI / 180
-
-    //     const dLat = lat2 - lat1
-    //     const dLon = lon2 - lon1
-
-    //     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    //         Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-    //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    //     console.log(R*c)
-    // }
 
     const fetchProfileData = async () => {
         try {
@@ -75,10 +68,9 @@ const employeeDashboard = () => {
             setFetchUser(response.data)
         }
         catch (e) {
-            console.log(e)
+            console.log("Dashboard",e)
         }
     }
-
 
     const handleAttendance = async () => {
         router.push("/citizen/attendance")
@@ -112,7 +104,7 @@ const employeeDashboard = () => {
             </View>
         );
     }
-
+console.log(loadingLocation)
     if (user?.isLoggedIn && !user.isLoading) {
         return (
             <>
@@ -127,7 +119,8 @@ const employeeDashboard = () => {
                                 <Text style={styles.position}>{fetchUser.designation ? fetchUser.designation : "NA"}</Text>
                             </View>
                             <View style={styles.location}>
-                                {Array.isArray(locationText) && locationText.length > 0 ? (
+                                {/* {Array.isArray(locationText) && locationText.length > 0 ? ( */}
+                                {loadingLocation ?  (<Text>Loading....</Text>) : (
                                     locationText.map((item, index) => (
                                         <View key={index}>
                                             <Text style={styles.header_text}>Your Current Location: </Text>
@@ -135,7 +128,7 @@ const employeeDashboard = () => {
                                             <Text style={styles.data_text}>{item.formattedAddress}</Text>
                                         </View>
                                     ))
-                                ) : (<Text>Loading....</Text>)}
+                                ) }
                                 <Text style={styles.data_text}>{latitude}, {longitude}</Text>
                             </View>
                         </View>
@@ -158,6 +151,7 @@ const employeeDashboard = () => {
                             </View>
                         </View>
                     </View>
+                    <MyButton buttonTitle='Post Location' backgroundColor={Colors.primary} onClick={postLocationData} />
                 </View>
             </>
         )

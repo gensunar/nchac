@@ -2,10 +2,11 @@ import Constants from "expo-constants"
 
 const ENV = {
     dev: {
-      baseUrl: "https://711b-2401-4900-72b9-1f40-51b5-cb3c-3bcb-8e8f.ngrok-free.app", // Local URL for development
+      baseUrl: "https://de51-2401-4900-b208-c8c5-3537-efc3-51ab-92ea.ngrok-free.app", // Local URL for development
     },
     prod: {
       baseUrl: "https://nchac-backend.onrender.com", // Base URL for production
+      // baseurl: "https://nchac-backend.vercel.app"
     },
   };
   

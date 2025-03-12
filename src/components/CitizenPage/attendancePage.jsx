@@ -9,6 +9,7 @@ import config from '../../../config'
 import useLocation from "../../hooks/useLocation"
 import { getPreciseDistance } from 'geolib'
 import { Colors } from '../../../constants/Colors'
+import { Picker } from '@react-native-picker/picker'
 
 
 const AttendancePage = () => {
@@ -18,10 +19,18 @@ const AttendancePage = () => {
     const [records, setRecords] = useState([])
     const [loading, setLoading] = useState(false)
     const [presentDays, setPresentDays] = useState()
+    const [presentDaysMonth, setPresentDaysMonth] = useState()
+    const [absentDaysMonth, setAbsentDaysMonth] = useState()
+    const [attendanceLengthMonth, setAttendanceLengthMonth] = useState()
     const [absentDays, setAbsentDays] = useState()
     const [attendanceLength, setAttendanceLength] = useState()
+    const [month, setMonth] = useState(new Date().toLocaleString("en", { month: "long" }))
+    const [filterData, setFilterData] = useState([])
 
     const { latitude, location, longitude, errorMsg, locationText, distance } = useLocation()
+    const currentMonth = new Date().getMonth()+1
+
+    const monthName = ["All", "January", 'February', "March", "April", 'May', "June", "July", "August", "September", "October", "November", "December"]
 
     const markAttendance = async () => {
         try {
@@ -29,8 +38,8 @@ const AttendancePage = () => {
                 Alert.alert("Error", "You need location Permission")
                 return
             }
-            if(distance > 500){
-                Alert.alert(`${distance}`,"Distance should be less than 200m")
+            if (distance > 500) {
+                Alert.alert(`${distance}`, "Distance should be less than 500m")
                 return
             }
             const token = await auth.currentUser?.getIdToken()
@@ -50,7 +59,6 @@ const AttendancePage = () => {
         try {
             setLoading(true)
             const token = await auth.currentUser?.getIdToken()
-            console.log(token)
             const res = await axios.get(`${config.baseUrl}/api/user/get-attendance`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -73,6 +81,28 @@ const AttendancePage = () => {
         timeOfDay()
     }, [])
 
+
+
+    useEffect(() => {
+        if (month === "All") {
+            setFilterData(records)
+        }
+        else {
+            filterMonth()
+        }
+    }, [month, records])
+
+
+    const filterMonth = () => {
+        const filteredRecords = records?.filter((record) => {
+            return new Date(record.date).toLocaleString("en", { month: "long" }) === month;
+        });
+        setFilterData(filteredRecords);
+        setPresentDaysMonth(filteredRecords.filter((record) => record.status === "Present").length)
+        setAbsentDaysMonth(filteredRecords.filter((record) => record.status === "Absent").length)
+        setAttendanceLengthMonth(filteredRecords.length)
+    }
+
     const timeOfDay = () => {
         const hours = new Date().getHours()
         if (hours >= 12 && hours < 17) {
@@ -84,7 +114,6 @@ const AttendancePage = () => {
         }
     }
 
-
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -92,6 +121,7 @@ const AttendancePage = () => {
             </View>
         );
     }
+
 
     // render
     return (
@@ -102,20 +132,34 @@ const AttendancePage = () => {
                     <MyButton buttonTitle="Mark Attendance" onClick={markAttendance} backgroundColor={Colors.primary} color={Colors.white} width="100%" borderRadius={20} />
                 </View>
             </View>
+            <View style={{ borderWidth: 2, borderColor: Colors.primary, borderRadius: 10, marginTop: 15 }}>
+                <Picker
+                    selectedValue={month}
+                    onValueChange={(item) => setMonth(item)}
+                >
+                    {monthName.map((item, index) => (
+                        <Picker.Item key={index} label={item} value={item} enabled={index <= currentMonth} />
+                    ))}
+                    {/* {Array.from({ length: 12 }, (_, i) => i + 1).map((item) => (
+                        <Picker.Item key={item} label={new Date(0, item - 1).toLocaleString("en", { month: "long" })} value={item} />
+                    ))} */}
+                </Picker>
+            </View>
             <View style={styles.container}>
                 <View style={styles.header_row}>
                     <Text style={styles.header}>Date</Text>
                     <Text style={styles.header}>Time</Text>
                     <Text style={styles.header}>Status</Text>
                 </View>
-
-                {records.map((item, index) => {
+                {filterData.length === 0 && <Text style={{ textAlign: "center", fontFamily: "light", marginTop: 20 }}>No records found</Text>}
+                {filterData.map((item, index) => {
                     const formattedTimestamp = new Date((item.timestamp._seconds + item.timestamp._nanoseconds * 10 ** -9) * 1000).toLocaleTimeString("en-GB")
+                    const date = new Date(item.date).toLocaleDateString("en-GB").replace(/\//g, '-')
                     return (
                         <View style={styles.data} key={index}>
                             <View style={styles.card}>
                                 <View style={styles.day}>
-                                    <Text style={styles.date_cell}>{new Date(item.date).toLocaleDateString("en-GB").replace(/\//g, '-')}</Text>
+                                    <Text style={styles.date_cell}>{date}</Text>
                                     <Text style={styles.day_cell}>
                                         {new Date(item.date).toLocaleDateString("en-US", { weekday: "long" })}
                                     </Text>
@@ -130,16 +174,16 @@ const AttendancePage = () => {
                     <View style={styles.status_column}>
                         <View style={styles.status_header}>
                             <Text style={[styles.status_data, { color: Colors.primary }]}>Present:</Text>
-                            <Text style={{ color: Colors.primary }}> {presentDays}</Text>
+                            {month === "All" ? (<Text style={{ color: Colors.primary }}> {presentDays}</Text>) : (<Text style={{ color: Colors.primary }}>{presentDaysMonth}</Text>)}
                         </View>
                         <View style={styles.status_header}>
                             <Text style={[styles.status_data, { color: "red" }]}>Absent:</Text>
-                            <Text style={{ color: "red", }}> {absentDays}</Text>
+                            {month === "All" ? (<Text style={{ color: "red", }}> {absentDays}</Text>) : (<Text style={{ color: "red", }}>{absentDaysMonth}</Text>)}
                         </View>
                     </View>
                     <View style={styles.status_header}>
                         <Text style={[styles.status_data, { color: Colors.primary }]}>Total:</Text>
-                        <Text style={{ color: Colors.primary }}> {attendanceLength}</Text>
+                        {month === "All" ? (<Text style={{ color: Colors.primary }}> {attendanceLength}</Text>) : (<Text style={{ color: Colors.primary }}>{attendanceLengthMonth}</Text>)}
                     </View>
                 </View>
             </View>
@@ -182,10 +226,8 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     container: {
-        padding: 16,
         paddingTop: 30,
         paddingBottom: 60,
-        // backgroundColor: '#fff',
     },
     header_row: {
         flexDirection: 'row',

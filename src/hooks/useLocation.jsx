@@ -12,6 +12,7 @@ const useLocation = () => {
     const [longitude, setLongitude] = useState(null)
     const [locationText, setLocationText] = useState([])
     const [distance, setDistance] = useState(null)
+    const [loadingLocation, setLoadingLocation] = useState(true)
 
     const requestPermission = async () => {
         let permissionGranted = false;
@@ -46,17 +47,6 @@ const useLocation = () => {
                 return false;
             }
         }
-        // try {
-        //     const { status } = await Location.requestForegroundPermissionsAsync()
-        //     if (status !== 'granted') {
-        //         setErrorMsg("Permission to access location was denied")
-        //         return false
-        //     }
-        //     return true
-        // } catch (error) {
-        //     console.error('Permission error:', error);
-        //     setErrorMsg(error)
-        // }
     };
 
     const getCurrentLocation = async () => {
@@ -74,20 +64,25 @@ const useLocation = () => {
                     setLatitude(latitude)
                     setLongitude(longitude)
                     setLocation(newLocation.coords)
+
+
                     const response = await Location.reverseGeocodeAsync({
                         latitude,
                         longitude,
                     })
-                    setLocationText(response)
 
+                    if (response.length > 0) {
+                        setLocationText(response)
+                        setLoadingLocation(false)
+                    }
                     var distanceData = getPreciseDistance(
                         { latitude, longitude },
                         { latitude: 25.191766059505806, longitude: 93.02257052660393 }
                     )
-                   setDistance(distanceData)
+                    setDistance(distanceData)
                 }
                 catch (e) {
-                    setErrorMsg(e.Error)
+                    setErrorMsg(e.message)
                 }
             });
         } catch (e) {
@@ -95,10 +90,9 @@ const useLocation = () => {
             console.log(e)
         }
     }
-
     useEffect(() => {
         getCurrentLocation()
-        
+
         const interval = setInterval(() => {
             if (location) {
                 requestPermission()
@@ -108,14 +102,14 @@ const useLocation = () => {
         return () => clearInterval(interval)
     }, [])
 
-       
+
     let text = 'Waiting...';
     if (errorMsg) {
         text = errorMsg;
     } else if (location) {
         text = JSON.stringify(location);
     }
-    return { latitude, longitude, errorMsg, locationText, location, distance }
+    return { latitude, longitude, errorMsg, locationText, location, distance, loadingLocation }
 }
 
 export default useLocation

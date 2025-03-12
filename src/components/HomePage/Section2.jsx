@@ -8,22 +8,26 @@ const Section2 = () => {
     return (
         <View style={styles.container}>
             <View style={styles.first_card}>
-                <Image source={{uri : `https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg`}} style={styles.image} />
+                <Image source={{ uri: `https://res.cloudinary.com/ds4adb2me/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1738944289/samples/smile.jpg` }} style={styles.image} />
                 <Text style={styles.header}>Shri Calendar Pandey</Text>
                 <Text style={styles.sub_header}>Hon'ble Chief Executive Member</Text>
             </View>
             <View style={styles.second_card}>
                 <Text style={styles.message_header1}>Message From The Member</Text>
                 <Text style={styles.message_header}>Dear Visitors,</Text>
-                <Text style={styles.message}>Nestled amidst the breathtaking hills and mountains, 
-                adorned by winding rivers and captivating scenic beauty, lies our beautiful Dima Hasao—the 
-                only hill station of Assam, where the oldest autonomous council, the Dima Hasao 
-                Autonomous Council (erstwhile North Cachar Hills Autonomous Council), finds its home.</Text>
-
-                <Text style={styles.message}>In our pursuit of progress, Dima Hasao Autonomous Council hold hands with tradition. 
-                    Our community is embracing advanced methods without losing sight of the customs that define us. 
-                    Whether it's sustainable agriculture, eco-friendly tourism, or community welfare, we honor our 
-                    roots while embracing modern solutions.</Text>
+                <View>
+                    <Text style={styles.message}>Nestled amidst the breathtaking hills and mountains,
+                        adorned by winding rivers and captivating scenic beauty, lies our beautiful Dima Hasao—the
+                        only hill station of Assam, where the oldest autonomous council, the Dima Hasao
+                        Autonomous Council (erstwhile North Cachar Hills Autonomous Council), finds its home.
+                    </Text>
+                    <Text style={styles.message}>
+                        In our pursuit of progress, Dima Hasao Autonomous Council hold hands with tradition.
+                        Our community is embracing advanced methods without losing sight of the customs that define us.
+                        Whether it's sustainable agriculture, eco-friendly tourism, or community welfare, we honor our
+                        roots while embracing modern solutions.
+                    </Text>
+                </View>
                 <Text style={styles.bottom}>Warm Regards</Text>
             </View>
         </View>
@@ -46,13 +50,13 @@ const styles = StyleSheet.create({
         objectFit: 'contain',
         borderRadius: 100,
         borderWidth: 2,
-        borderColor: Colors.ssecondary,
+        borderColor: Colors.secondary,
     },
     header: {
         fontSize: 24,
         fontFamily: "roboto-bold",
         textAlign: "center",
-    }, 
+    },
     sub_header: {
         fontFamily: "roboto-extra-light",
         fontSize: 16,
@@ -77,6 +81,7 @@ const styles = StyleSheet.create({
         fontFamily: "regular",
         fontSize: 16,
         marginTop: 5,
+        letterSpacing: 1,
     },
     bottom: {
         marginTop: 2,
