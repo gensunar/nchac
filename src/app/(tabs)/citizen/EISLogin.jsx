@@ -1,18 +1,18 @@
-import { Stack } from 'expo-router'
 import React from 'react'
 import { View, Text } from 'react-native'
-import TeacherLogin from '../../../components/CitizenPage/TeacherLogin'
+import EISSignin from '../../../components/CitizenPage/TeacherLogin'
+import { Stack } from 'expo-router'
 
-const teacher = () => {
+const EISLogin = () => {
     // render
     return (
         <>
             <Stack.Screen options={{ headerShown: true }} />
             <View>
-                <TeacherLogin />
+                <EISSignin />
             </View>
         </>
     )
 }
 
-export default teacher
+export default EISLogin

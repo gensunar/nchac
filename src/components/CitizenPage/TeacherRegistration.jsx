@@ -5,53 +5,41 @@ import { Picker } from '@react-native-picker/picker'
 import MyButton from '../../navigation/MyButton'
 import axios from 'axios'
 import config from '../../../config'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../firebase'
-import { Link, router, useRouter } from 'expo-router'
+import { Link } from 'expo-router'
 
-const TeacherLogin = () => {
+const TeacherRegistration = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [selectedValue, setSelectedValue] = useState('')
 
-    const router = useRouter()
-
 
     const handleSubmit = async () => {
         try {
-            if (!email || !password || !selectedValue) {
+            if (!email || !password || !confirmPassword || !selectedValue) {
                 Alert.alert("Error", "All fields are required")
                 return
             }
-            const userCred = await signInWithEmailAndPassword(auth, email, password)
-            console.log(auth)
-            if (userCred) {
+            if (password !== confirmPassword) {
+                Alert.alert("Error", "Password do not match")
+            }
+            const userCred = await createUserWithEmailAndPassword(auth, email, password)
+            if (userCred){
                 const uid = userCred.user.uid
                 const token = await userCred.user.getIdToken()
-                const response = await axios.post(`${config.baseUrl}/eis/teacher/teacher-role`,
-                    { role: selectedValue },
-                    { headers: { 'Authorization': `Bearer ${token}` } },
+                const response = await axios.post(`${config.baseUrl}/eis/teacher/add-teacher`, 
+                    {email, password, role: selectedValue, uid},
+                    {headers: {'Authorization': `Bearer ${token}`}},
                 )
                 Alert.alert("Success", response.data.message)
-
-
-                if (response.data.userRole == 'teacher') {
-                    router.push('/citizen/TeacherDashboard')
-                } else if (response.data.userRole == 'school') {
-                    router.push('/citizen/SchoolDashboard')
-                } else {
-                    Alert.alert('Something went wrong')
-                    auth().signOut()
-                }
+                console.log(response)
             }
         } catch (e) {
             console.log(e)
-            const errorMessage = e.response?.data?.message || e.message;
-            Alert.alert('Error', errorMessage);
         }
     }
-    console.log(selectedValue)
 
     // render
     return (
@@ -78,6 +66,14 @@ const TeacherLogin = () => {
                             onChangeText={setPassword}
                         />
                     </View>
+                    <View>
+                        <Text style={styles.text}>Confirm Password</Text>
+                        <PrimaryInput
+                            placeholder="confirm password"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                        />
+                    </View>
                     <View style={styles.dropdownContainer}>
                         <Text style={styles.text}>Select Role</Text>
                         <View style={styles.pickerContainer}>
@@ -93,9 +89,9 @@ const TeacherLogin = () => {
                         </View>
                     </View>
                 </View>
-                <MyButton onClick={handleSubmit} buttonTitle={"Sign In"} backgroundColor="#FFBF00" width="100%" borderRadius={40} />
+                <MyButton onClick={handleSubmit} buttonTitle={"Submit"} backgroundColor="#FFBF00" width="100%" borderRadius={40} />
             </View>
-            <Link href='/citizen/EISSignup'>Registration</Link>
+            <Link href='/citizen/EISLogin'>Login</Link>
         </ScrollView>
     )
 }
@@ -145,4 +141,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default TeacherLogin
+export default TeacherRegistration

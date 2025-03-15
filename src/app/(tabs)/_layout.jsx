@@ -9,6 +9,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import { useFonts } from "expo-font"
+import { Colors } from '../../../constants/Colors'
 
 const RootLayout = () => {
 
@@ -36,9 +37,9 @@ const RootLayout = () => {
             <PersistGate loading={<Text>Loading</Text>} persistor={persistor}>
                 <Tabs screenOptions={{
                     tabBarActiveTintColor: '#097969',
-                    tabBarInactiveTintColor: '#01889f',
+                    tabBarInactiveTintColor: Colors.gray,
                     tabBarStyle: { backgroundColor: 'white', height: 60, },
-                    tabBarLabelStyle: { fontSize: 12, fontFamily: "roboto-medium" },
+                    tabBarLabelStyle: { fontSize: 12, fontFamily: "roboto-medium", letterSpacing: 0.5 },
                     tabBarItemStyle: {
                         position: "relative", marginBottom: 3,
                     }, headerShown: false

@@ -24,7 +24,6 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
 
     const secondInputRef = useRef(null);
-    const thirdInputRef = useRef(null);
 
 
     const loginHandler = async () => {

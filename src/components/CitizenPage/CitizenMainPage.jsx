@@ -21,7 +21,7 @@ const CitizenMainPage = () => {
                 </View>
                 <View style={styles.card}>
                     <Ionicons name="book-outline" size={32} color={Colors.primary} style={styles.icon} />
-                    <Link href="/citizen/Teacher"><Text style={styles.text}>Education Department</Text></Link>
+                    <Link href="/citizen/EISLogin"><Text style={styles.text}>Education Department</Text></Link>
                 </View>
                 <View style={styles.card}>
                     <Entypo name="man" size={32} color={Colors.primary} style={styles.icon} />

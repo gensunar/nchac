@@ -15,7 +15,7 @@ import { Picker } from '@react-native-picker/picker'
 const AttendancePage = () => {
     const user = useSelector((state) => state.user)
     const [userData, setUserData] = useState(user.user)
-    const [day, setDay] = useState("")
+    const [day, setDay] = useState("") 
     const [records, setRecords] = useState([])
     const [loading, setLoading] = useState(false)
     const [presentDays, setPresentDays] = useState()
