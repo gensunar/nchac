@@ -6,14 +6,14 @@ import MyButton from '../../navigation/MyButton'
 import axios from 'axios'
 import config from '../../../config'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import { teacherAuth } from '../../../firebase'
 import { Link } from 'expo-router'
 
 const TeacherRegistration = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [selectedValue, setSelectedValue] = useState('')
+    const [selectedValue, setSelectedValue] = useState('teacher')
 
 
     const handleSubmit = async () => {
@@ -24,8 +24,9 @@ const TeacherRegistration = () => {
             }
             if (password !== confirmPassword) {
                 Alert.alert("Error", "Password do not match")
+                return
             }
-            const userCred = await createUserWithEmailAndPassword(auth, email, password)
+            const userCred = await createUserWithEmailAndPassword(teacherAuth, email, password)
             if (userCred){
                 const uid = userCred.user.uid
                 const token = await userCred.user.getIdToken()
@@ -34,7 +35,7 @@ const TeacherRegistration = () => {
                     {headers: {'Authorization': `Bearer ${token}`}},
                 )
                 Alert.alert("Success", response.data.message)
-                console.log(response)
+                console.log("respone",response)
             }
         } catch (e) {
             console.log(e)

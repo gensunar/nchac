@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //user Reducer
 import userReducer from "./slices/user"
 import themeReducer from "./slices/themeSlice";
+import teacherReducer from "./slices/teacherSlice"
 
 
 const persistConfig = {
@@ -21,6 +22,7 @@ export const store = configureStore({
         selectedItem: selectedItemReducer,
         user: persistedReducer,
         theme: themeReducer,
+        teacher: teacherReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

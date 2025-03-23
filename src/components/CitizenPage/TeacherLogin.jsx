@@ -1,31 +1,45 @@
-import React, { useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native'
 import PrimaryInput from '../../../constants/primaryInput'
 import { Picker } from '@react-native-picker/picker'
 import MyButton from '../../navigation/MyButton'
 import axios from 'axios'
 import config from '../../../config'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
-import { Link, router, useRouter } from 'expo-router'
+import { teacherAuth } from '../../../firebase'
+import { Link, router, useFocusEffect, useRouter } from 'expo-router'
+import { Colors } from "../../../constants/Colors"
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { teacherLogin, teacherLogout } from '../../store/slices/teacherSlice'
+
 
 const TeacherLogin = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [selectedValue, setSelectedValue] = useState('')
+    const [selectedValue, setSelectedValue] = useState('teacher')
+    const [captcha, setCaptcha] = useState("")
+    const [captchaValue, setCaptchaValue] = useState("")
+    const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
+
+    const teacherUser = useSelector((state) => state.teacher)
+    console.log("Teacher Slice", teacherUser)
 
     const router = useRouter()
-
+    const dispatch = useDispatch()
 
     const handleSubmit = async () => {
         try {
-            if (!email || !password || !selectedValue) {
+            if (!email || !password || !selectedValue || !captchaValue) {
                 Alert.alert("Error", "All fields are required")
                 return
             }
-            const userCred = await signInWithEmailAndPassword(auth, email, password)
-            console.log(auth)
+            const captchaResponse = await axios.post(`${config.baseUrl}/captcha/verify-captcha`, { userCaptcha: captchaValue })
+
+            const userCred = await signInWithEmailAndPassword(teacherAuth, email, password)
+
             if (userCred) {
                 const uid = userCred.user.uid
                 const token = await userCred.user.getIdToken()
@@ -34,7 +48,10 @@ const TeacherLogin = () => {
                     { headers: { 'Authorization': `Bearer ${token}` } },
                 )
                 Alert.alert("Success", response.data.message)
-
+                console.log("From Response",response.data.userRef)
+                dispatch(teacherLogin({
+                    teacher: response.data.userRef
+                }))
 
                 if (response.data.userRole == 'teacher') {
                     router.push('/citizen/TeacherDashboard')
@@ -45,13 +62,41 @@ const TeacherLogin = () => {
                     auth().signOut()
                 }
             }
+
         } catch (e) {
             console.log(e)
             const errorMessage = e.response?.data?.message || e.message;
             Alert.alert('Error', errorMessage);
+            generateCaptcha()
         }
     }
-    console.log(selectedValue)
+
+
+    const generateCaptcha = async () => {
+        try {
+            const response = await axios.get(`${config.baseUrl}/captcha/generate-captcha`)
+            setCaptcha(response.data.captcha)
+            setCaptchaValue('')
+            setIsCaptchaLoaded(true)
+        } catch (e) {
+            console.log(e)
+            const errorMessage = e.response?.data?.message || e.message
+            Alert.alert('Error', errorMessage)
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            if (!isCaptchaLoaded) {
+                generateCaptcha()
+            }
+        }, [])
+    )
+
+
+    useEffect(() => {
+        generateCaptcha()
+    }, [])
 
     // render
     return (
@@ -92,10 +137,26 @@ const TeacherLogin = () => {
                             </Picker>
                         </View>
                     </View>
+                    <View style={styles.captcha}>
+                        <Text style={{ fontSize: 20, fontFamily: "light" }}>captcha:   </Text>
+                        <Text style={{ fontFamily: "semi-bold", alignItems: "center" }}>{captcha}        </Text>
+                        <TouchableOpacity onPress={generateCaptcha}>
+                            <MaterialCommunityIcons name="reload" size={24} color="#808080" />
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <PrimaryInput
+                            placeholder="captcha"
+                            value={captchaValue}
+                            onChangeText={setCaptchaValue}
+                        />
+                    </View>
                 </View>
                 <MyButton onClick={handleSubmit} buttonTitle={"Sign In"} backgroundColor="#FFBF00" width="100%" borderRadius={40} />
             </View>
             <Link href='/citizen/EISSignup'>Registration</Link>
+            <Link href='/citizen/SchoolDashboard'>School Dashboard</Link>
+            <Link href='/citizen/TeacherDashboard'>Teacher Dashboard</Link>
         </ScrollView>
     )
 }
@@ -119,11 +180,12 @@ const styles = StyleSheet.create({
         fontFamily: "extra-light"
     },
     child_container: {
-        padding: 20
+        padding: 20,
     },
     card: {
         backgroundColor: "#fff",
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 40,
         borderRadius: 10,
         marginBottom: 20,
     },
@@ -143,6 +205,17 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         borderRadius: 4,
     },
+    captcha: {
+        marginTop: 20,
+        backgroundColor: '#e6e6e6',
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+    }
 })
 
 export default TeacherLogin

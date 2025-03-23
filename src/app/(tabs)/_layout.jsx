@@ -38,10 +38,10 @@ const RootLayout = () => {
                 <Tabs screenOptions={{
                     tabBarActiveTintColor: '#097969',
                     tabBarInactiveTintColor: Colors.gray,
-                    tabBarStyle: { backgroundColor: 'white', height: 60, },
-                    tabBarLabelStyle: { fontSize: 12, fontFamily: "roboto-medium", letterSpacing: 0.5 },
+                    tabBarStyle: { backgroundColor: 'white', height: 65,  },
+                    tabBarLabelStyle: { fontSize: 12, fontFamily: "roboto-medium", letterSpacing: 0.5, marginTop: 3 },
                     tabBarItemStyle: {
-                        position: "relative", marginBottom: 3,
+                        position: "relative",
                     }, headerShown: false
                 }}>
                     <Tabs.Screen name="home" options={{

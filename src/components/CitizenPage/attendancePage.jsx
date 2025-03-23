@@ -138,7 +138,7 @@ const AttendancePage = () => {
                     onValueChange={(item) => setMonth(item)}
                 >
                     {monthName.map((item, index) => (
-                        <Picker.Item key={index} label={item} value={item} enabled={index <= currentMonth} />
+                        <Picker.Item key={index} label={item} value={item} enabled={index <= currentMonth } color={index <= currentMonth ? "#000" : "#D9D9D9"} />
                     ))}
                     {/* {Array.from({ length: 12 }, (_, i) => i + 1).map((item) => (
                         <Picker.Item key={item} label={new Date(0, item - 1).toLocaleString("en", { month: "long" })} value={item} />

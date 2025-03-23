@@ -20,16 +20,31 @@ const firebaseConfig = {
   measurementId: "G-SYPEG7TKQC"
 };
 
+const firebaseConfigTeacher = {
+  apiKey: "AIzaSyC9QW6tRNhZ4uYRvUw7XJFzt7oNvT0KpyM",
+  authDomain: "nchac-teacher.firebaseapp.com",
+  projectId: "nchac-teacher",
+  storageBucket: "nchac-teacher.firebasestorage.app",
+  messagingSenderId: "181800148318",
+  appId: "1:181800148318:web:7a9f1f105c23a53f2cc3cf",
+  measurementId: "G-4VNR06XFK4"
+};
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const teacherApp = initializeApp(firebaseConfigTeacher, 'TeacherApp')
 
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage)
 });
 
-export const db =getFirestore(app)
+export const teacherAuth = initializeAuth(teacherApp, {
+  persistence: getReactNativePersistence(AsyncStorage)
+})
 
-export const usersRef = collection(db, "users")
+// export const db =getFirestore(app)
+
+// export const usersRef = collection(db, "users")
 
 
 // export const auth = getAuth(app);

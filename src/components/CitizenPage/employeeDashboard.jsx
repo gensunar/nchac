@@ -104,7 +104,7 @@ const employeeDashboard = () => {
             </View>
         );
     }
-console.log(loadingLocation)
+
     if (user?.isLoggedIn && !user.isLoading) {
         return (
             <>
